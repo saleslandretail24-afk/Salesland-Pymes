@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SALESLAND | Suite Ejecutiva &amp; Panel Administrativo de Dashboards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* =========================================================================
+       VARIABLES EJECUTIVAS CORPORATIVAS: MODO OSCURO Y MODO CLARO REAL
+       ========================================================================= */
+    :root,
+    html[data-theme="dark"] {
+      --bg-app: #060c18;
+      --bg-sidebar: #091326;
+      --bg-topbar: rgba(9, 19, 38, 0.92);
+      --bg-surface: #0d1b33;
+      --bg-surface-elevated: #132442;
+      --bg-surface-subtle: rgba(15, 29, 54, 0.75);
+      --border-color: rgba(148, 163, 184, 0.18);
+      --border-strong: rgba(56, 189, 248, 0.35);
+      --text-main: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --brand-primary: #0284c7;
+      --brand-accent: #38bdf8;
+      --brand-navy: #0c2340;
+      --retail-accent: #f59e0b;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --indigo: #6366f1;
+      --shadow-card: 0 12px 32px -6px rgba(0, 0, 0, 0.55);
+      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    html[data-theme="light"] {
+      --bg-app: #f1f5f9;
+      --bg-sidebar: #0c2340;
+      --bg-topbar: rgba(255, 255, 255, 0.96);
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #f8fafc;
+      --bg-surface-subtle: #f1f5f9;
+      --border-color: #cbd5e1;
+      --border-strong: #0284c7;
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --brand-primary: #0284c7;
+      --brand-accent: #0369a1;
+      --brand-navy: #0c2340;
+      --retail-accent: #d97706;
+      --emerald: #059669;
+      --rose: #e11d48;
+      --indigo: #4f46e5;
+      --shadow-card: 0 10px 26px -6px rgba(15, 23, 42, 0.08);
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-app);
+      color: var(--text-main);
+      min-height: 100vh;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    /* =========================================================================
+       GATEWAY DE AUTENTICACIÓN CORPORATIVO (SCRYPT SERVER + KDF FALLBACK)
+       ========================================================================= */
+    #auth-gateway-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: radial-gradient(circle at 18% 20%, rgba(2, 132, 199, 0.22) 0%, transparent 45%),
+        radial-gradient(circle at 82% 80%, rgba(16, 185, 129, 0.16) 0%, transparent 45%),
+        rgba(5, 10, 22, 0.96);
+      backdrop-filter: blur(22px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    #auth-gateway-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .portal-shell.auth-locked {
+      filter: blur(16px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+      background: rgba(13, 25, 48, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-top: 4px solid #0284c7;
+      border-radius: 18px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.75);
+      text-align: center;
+      color: #f8fafc;
+    }
+
+    .auth-logo-mark {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0284c7 0%, #1e3a8a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #ffffff;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
+    }
+
+    .auth-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 0.3rem;
+    }
+
+    .auth-subtitle {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      line-height: 1.45;
+      margin-bottom: 1.35rem;
+    }
+
+    .auth-input-wrapper {
+      position: relative;
+      margin-bottom: 0.9rem;
+    }
+
+    .auth-input {
+      width: 100%;
+      padding: 0.8rem 2.6rem 0.8rem 2.5rem;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(6, 12, 24, 0.85);
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .auth-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+
+    .auth-input-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .auth-eye-btn {
+      position: absolute;
+      right: 0.7rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+
+    .auth-btn-submit {
+      width: 100%;
+      padding: 0.82rem 1.1rem;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35);
+    }
+
+    .auth-error-banner {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(244, 63, 94, 0.14);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      color: #fda4af;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      margin-bottom: 0.9rem;
+      text-align: left;
+    }
+
+    /* =========================================================================
+       LAYOUT DEL PANEL ADMINISTRATIVO (SIDEBAR + MAIN WORKSPACE)
+       ========================================================================= */
+    .portal-shell {
+      display: grid;
+      grid-template-columns: 268px 1fr;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR ADMINISTRATIVO */
+    .admin-sidebar {
+      background: var(--bg-sidebar);
+      color: #f8fafc;
+      border-right: 1px solid rgba(148, 163, 184, 0.16);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.25rem 1rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.35rem 0.5rem 1.15rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    }
+
+    .sidebar-brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+    }
+
+    .sidebar-brand-sub {
+      font-size: 0.68rem;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sidebar-section-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      padding: 0.5rem 0.65rem 0.35rem;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .sidebar-nav-btn {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.55rem;
+      transition: all 0.18s ease;
+    }
+
+    .sidebar-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+    }
+
+    .sidebar-nav-btn.active {
+      background: linear-gradient(90deg, rgba(2, 132, 199, 0.28) 0%, rgba(2, 132, 199, 0.08) 100%);
+      border-color: rgba(56, 189, 248, 0.45);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: inset 3px 0 0 #38bdf8;
+    }
+
+    .sidebar-badge {
+      font-size: 0.64rem;
+      font-weight: 800;
+      padding: 0.14rem 0.45rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.16);
+      color: #38bdf8;
+    }
+
+    .sidebar-badge.retail {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+    }
+
+    .sidebar-status-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 12px;
+      padding: 0.85rem;
+      font-size: 0.72rem;
+      color: #cbd5e1;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      margin-right: 5px;
+    }
+
+    /* WORKSPACE CENTRAL */
+    .admin-workspace {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 100vh;
+    }
+
+    /* TOPBAR EJECUTIVA */
+    .admin-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 95;
+      background: var(--bg-topbar);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.7rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .topbar-title-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar-crumb {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--brand-accent);
+    }
+
+    .topbar-heading {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* CONTROLES DE TEMA Y SESIÓN */
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .exec-control-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 9px;
+      padding: 0.38rem 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .btn-exec-action {
+      padding: 0.48rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-decoration: none;
+      transition: all 0.18s ease;
+    }
+
+    .btn-exec-action:hover {
+      border-color: var(--brand-primary);
+    }
+
+    .btn-exec-primary {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff !important;
+      border-color: #0284c7;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+
+    /* =========================================================================
+       CONTENIDO DEL CENTRO ADMINISTRATIVO
+       ========================================================================= */
+    .workspace-body {
+      padding: 1.5rem 1.5rem 2.2rem;
+      max-width: 1560px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* TARJETAS DE SELECCIÓN DE DASHBOARD CONSOLIDADO */
+    .dashboards-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 900px) {
+      .dashboards-selector-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dash-exec-card {
+      background: var(--bg-surface);
+      border: 2px solid var(--border-color);
+      border-top: 4px solid var(--brand-primary);
+      border-radius: 16px;
+      padding: 1.4rem 1.45rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.1rem;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      position: relative;
+    }
+
+    .dash-exec-card.retail-card {
+      border-top-color: var(--retail-accent);
+    }
+
+    .dash-exec-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .dash-exec-card.selected {
+      border-color: var(--brand-primary);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2), var(--shadow-card);
+    }
+
+    .dash-exec-card.retail-card.selected {
+      border-color: var(--retail-accent);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22), var(--shadow-card);
+    }
+
+    .dash-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .dash-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(2, 132, 199, 0.14);
+      color: var(--brand-accent);
+    }
+
+    .dash-pill-badge.retail {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--retail-accent);
+    }
+
+    .dash-card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-top: 0.5rem;
+    }
+
+    .dash-card-sub {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-top: 0.25rem;
+    }
+
+    .dash-card-mini-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0.75rem 0.85rem;
+    }
+
+    @media (max-width: 560px) {
+      .dash-card-mini-kpis {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .mini-kpi-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .mini-kpi-lbl {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .mini-kpi-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .dash-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      padding-top: 0.25rem;
+    }
+
+    /* =========================================================================
+       VISOR DE DASHBOARD INTEGRADO
+       ========================================================================= */
+    #embedded-viewer-section {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      width: 100%;
+    }
+
+    .viewer-exec-ribbon {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.65rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .viewer-ribbon-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    #dashboard-iframe {
+      width: 100%;
+      height: calc(100vh - 115px);
+      border: none;
+      background: var(--bg-app);
+    }
+
+    /* VISTA ADMINISTRACIÓN & SEGURIDAD */
+    #admin-settings-section {
+      display: none;
+    }
+
+    .admin-settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.15rem;
+    }
+
+    @media (max-width: 860px) {
+      .admin-settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .admin-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .admin-box-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    /* MODALES */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(3, 8, 18, 0.82);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .proj-url-box {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--brand-accent);
+      word-break: break-all;
+    }
+
+    /* MODO CLARO REAL EN SIDEBAR Y LOGIN GATEWAY */
+    html[data-theme="light"] #auth-gateway-overlay {
+      background: radial-gradient(circle at 18% 20%, rgba(2, 132, 199, 0.14) 0%, transparent 48%),
+        radial-gradient(circle at 82% 80%, rgba(16, 185, 129, 0.12) 0%, transparent 48%),
+        rgba(241, 245, 249, 0.96);
+    }
+
+    html[data-theme="light"] .auth-card {
+      background: #ffffff;
+      border-color: #cbd5e1;
+      color: #0f172a;
+      box-shadow: 0 24px 55px -12px rgba(15, 23, 42, 0.18);
+    }
+
+    html[data-theme="light"] .auth-title {
+      color: #0f172a;
+    }
+
+    html[data-theme="light"] .auth-subtitle {
+      color: #475569;
+    }
+
+    html[data-theme="light"] .auth-input {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+
+    html[data-theme="light"] .admin-sidebar {
+      background: #ffffff;
+      color: #0f172a;
+      border-right: 1px solid #cbd5e1;
+      box-shadow: 4px 0 20px rgba(15, 23, 42, 0.04);
+    }
+
+    html[data-theme="light"] .sidebar-brand {
+      border-bottom-color: #e2e8f0;
+    }
+
+    html[data-theme="light"] .sidebar-brand-title {
+      color: #0c2340;
+    }
+
+    html[data-theme="light"] .sidebar-nav-btn {
+      color: #334155;
+    }
+
+    html[data-theme="light"] .sidebar-nav-btn:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    html[data-theme="light"] .sidebar-nav-btn.active {
+      background: linear-gradient(90deg, rgba(2, 132, 199, 0.14) 0%, rgba(2, 132, 199, 0.04) 100%);
+      border-color: #0284c7;
+      color: #0c2340;
+      box-shadow: inset 3px 0 0 #0284c7;
+    }
+
+    html[data-theme="light"] .sidebar-status-box {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+      color: #334155;
+    }
+
+    /* CONMUTADOR DE TEMA DE 3 ESTADOS: CLARO | OSCURO | ADAPTATIVO */
+    .theme-mode-segmented {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .theme-seg-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 0.36rem 0.68rem;
+      border-radius: 7px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .theme-seg-btn:hover {
+      color: var(--text-main);
+      background: rgba(2, 132, 199, 0.08);
+    }
+
+    .theme-seg-btn.active {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+      color: #ffffff !important;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.35);
+    }
+
+    /* === RESPONSIVE MOBILE & DESKTOP SUITE === */
+    .mobile-sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(5px);
+      z-index: 95;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+
+    .mobile-sidebar-backdrop.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .sidebar-mobile-close-btn {
+      display: none;
+      margin-left: auto;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #f8fafc;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 92;
+      background: var(--bg-topbar);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border-color);
+      padding: 0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.25rem;
+      box-shadow: 0 -8px 25px rgba(2, 6, 23, 0.35);
+    }
+
+    .mob-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+      padding: 0.38rem 0.25rem;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.68rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-family: inherit;
+    }
+
+    .mob-nav-item span.mob-nav-ico {
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+
+    .mob-nav-item.active {
+      background: rgba(2, 132, 199, 0.14);
+      color: var(--brand-accent);
+      border-color: rgba(56, 189, 248, 0.32);
+    }
+
+    @media (min-width: 1440px) {
+      .workspace-body {
+        max-width: 1720px;
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .dashboards-selector-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 1040px) {
+      .portal-shell {
+        grid-template-columns: 1fr !important;
+      }
+
+      #btn-mobile-menu {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        min-width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+        padding: 0 0.65rem;
+      }
+
+      .sidebar-mobile-close-btn {
+        display: inline-flex !important;
+      }
+
+      .admin-sidebar {
+        display: flex !important;
+        position: fixed !important;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px !important;
+        max-width: 85vw;
+        z-index: 100 !important;
+        transform: translateX(-105%);
+        transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 12px 0 36px rgba(0, 0, 0, 0.65);
+      }
+
+      .admin-sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .admin-topbar {
+        padding: 0.7rem 1rem !important;
+      }
+
+      .workspace-body {
+        padding: 1rem !important;
+      }
+
+      #embedded-viewer-section {
+        padding: 0.5rem !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: 66px;
+      }
+
+      .mobile-bottom-nav {
+        display: grid !important;
+      }
+
+      .admin-topbar {
+        position: relative !important;
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 0.65rem !important;
+        padding: 0.75rem 0.85rem !important;
+      }
+
+      .topbar-left {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .topbar-crumb {
+        font-size: 0.62rem !important;
+        line-height: 1.3;
+        white-space: normal;
+      }
+
+      .topbar-heading {
+        font-size: 1.02rem !important;
+        line-height: 1.25;
+      }
+
+      .topbar-controls {
+        width: 100%;
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 0.42rem !important;
+      }
+
+      .topbar-controls .theme-mode-segmented {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .topbar-controls .theme-seg-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 0.42rem 0.35rem !important;
+        font-size: 0.72rem !important;
+      }
+
+      .dash-exec-card {
+        padding: 1rem !important;
+        border-radius: 14px !important;
+      }
+
+      .dash-card-title {
+        font-size: 1.08rem !important;
+      }
+
+      .dash-card-mini-kpis {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.45rem !important;
+      }
+
+      .dash-card-actions {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0.45rem !important;
+      }
+
+      .dash-card-actions>div {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem !important;
+      }
+
+      .dash-card-actions>div:first-child .btn-exec-primary {
+        grid-column: 1 / -1;
+      }
+
+      .dash-card-actions .btn-exec-action {
+        justify-content: center;
+        text-align: center;
+        padding: 0.5rem 0.6rem !important;
+        font-size: 0.75rem !important;
+      }
+
+      .viewer-ribbon-top {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+
+      .viewer-ribbon-top>div {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      #dashboard-iframe {
+        height: calc(100dvh - 140px) !important;
+        min-height: 480px !important;
+        border-radius: 10px !important;
+      }
+
+      .admin-settings-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .proj-url-box {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        font-size: 0.7rem !important;
+      }
+
+      .proj-url-box .btn-exec-action {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .auth-card {
+        padding: 1.35rem 1.1rem !important;
+        border-radius: 16px !important;
+        width: 96% !important;
+      }
+
+      .auth-title {
+        font-size: 1.15rem !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======================================================================
+       🛡️ GATEWAY DE SEGURIDAD UNIFICADO (MISMA CLAVE Y PIN QUE LOS DASHBOARDS)
+       ====================================================================== -->
+  <div id="auth-gateway-overlay">
+    <div class="auth-card" id="auth-main-card">
+      <!-- Selector de Tema Visual en Portada (Claro / Oscuro / Adaptativo) -->
+      <div style="display:flex; justify-content:center; margin-bottom:1rem;">
+        <div class="theme-mode-segmented" title="Cambiar aspecto visual: Claro, Oscuro o Adaptativo al Sistema">
+          <button type="button" class="theme-seg-btn" data-tmode="light" onclick="window.setPortalThemeMode('light')">☀️
+            Claro</button>
+          <button type="button" class="theme-seg-btn" data-tmode="dark" onclick="window.setPortalThemeMode('dark')">🌙
+            Oscuro</button>
+          <button type="button" class="theme-seg-btn" data-tmode="auto" onclick="window.setPortalThemeMode('auto')">🖥️
+            Adaptativo</button>
+        </div>
+      </div>
+      <div class="auth-logo-mark">S</div>
+      <div class="auth-title">SUITE EJECUTIVA SALESLAND</div>
+      <div class="auth-subtitle">
+        Panel Administrativo &amp; Control de Dashboards Consolidados<br>
+        <span style="color:#38bdf8; font-weight:700;">Seguridad Corporativa • Single Sign-On</span>
+      </div>
+
+      <div class="auth-error-banner" id="auth-error-banner">
+        <span>⚠️</span>
+        <span id="auth-error-msg">Credenciales incorrectas. Acceso denegado.</span>
+      </div>
+
+      <div
+        style="display:flex; background:rgba(255,255,255,0.06); border-radius:9px; padding:3px; margin-bottom:1.15rem; gap:4px;">
+        <button type="button" id="auth-tab-master" onclick="window.setAuthMode('master')"
+          style="flex:1; padding:0.48rem 0.5rem; border-radius:7px; border:none; background:#0284c7; color:#fff; font-size:0.78rem; font-weight:700; cursor:pointer;">
+          👑 Administrador
+        </button>
+        <button type="button" id="auth-tab-user" onclick="window.setAuthMode('user')"
+          style="flex:1; padding:0.48rem 0.5rem; border-radius:7px; border:none; background:transparent; color:#94a3b8; font-size:0.78rem; font-weight:700; cursor:pointer;">
+          👔✌️ Supervisores
+        </button>
+      </div>
+
+      <form id="auth-form-master" onsubmit="event.preventDefault(); window.submitPortalAdminAuth();">
+        <div class="auth-input-wrapper">
+          <span class="auth-input-icon">🔒</span>
+          <input type="password" id="auth-password-input" class="auth-input" placeholder="Contraseña maestra (Admin)..."
+            autocomplete="current-password" autofocus required>
+          <button type="button" class="auth-eye-btn" onclick="window.toggleInputVis('auth-password-input')">👁️</button>
+        </div>
+        <div
+          style="display:flex; justify-content:space-between; align-items:center; font-size:0.76rem; color:#cbd5e1; margin-bottom:1.1rem;">
+          <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+            <input type="checkbox" id="auth-remember-checkbox" checked style="accent-color:#0284c7;">
+            <span>Mantener sesión activa en los dashboards</span>
+          </label>
+        </div>
+        <button type="submit" class="auth-btn-submit">
+          <span>Ingresar al Panel Administrativo</span>
+          <span>➔</span>
+        </button>
+      </form>
+
+      <form id="auth-form-user" onsubmit="event.preventDefault(); window.submitPortalSupervisorAuth();"
+        style="display:none;">
+        <div
+          style="background:rgba(2, 132, 199, 0.1); border:1px solid rgba(56, 189, 248, 0.25); border-radius:8px; padding:0.6rem 0.8rem; margin-bottom:0.85rem; text-align:left;">
+          <div style="font-size:0.78rem; font-weight:700; color:#38bdf8;">👔 Acceso para Supervisión Comercial</div>
+          <div style="font-size:0.7rem; color:#94a3b8; margin-top:0.15rem;">Ingresa el PIN de supervisión para consultar
+            los dashboards consolidados.</div>
+        </div>
+        <div class="auth-input-wrapper">
+          <span class="auth-input-icon">🔑</span>
+          <input type="password" id="auth-supervisor-pin-input" class="auth-input" placeholder="PIN de Supervisores..."
+            autocomplete="current-password" required>
+          <button type="button" class="auth-eye-btn"
+            onclick="window.toggleInputVis('auth-supervisor-pin-input')">👁️</button>
+        </div>
+        <div
+          style="display:flex; justify-content:space-between; align-items:center; font-size:0.76rem; color:#cbd5e1; margin-bottom:1.1rem;">
+          <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+            <input type="checkbox" id="auth-supervisor-remember-checkbox" checked style="accent-color:#0284c7;">
+            <span>Recordar en este dispositivo</span>
+          </label>
+        </div>
+        <button type="submit" class="auth-btn-submit">
+          <span>Ingresar como Supervisor</span>
+          <span>➔</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       ESTRUCTURA PRINCIPAL DEL PANEL ADMINISTRATIVO EJECUTIVO
+       ====================================================================== -->
+  <div class="mobile-sidebar-backdrop" id="mobile-sidebar-backdrop" onclick="window.toggleMobileSidebar(false)"></div>
+  <div class="portal-shell" id="portal-wrapper">
+    <!-- SIDEBAR ADMINISTRATIVO LATERAL -->
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div>
+        <div class="sidebar-brand">
+          <div class="sidebar-logo">S</div>
+          <div>
+            <div class="sidebar-brand-title">SALESLAND</div>
+            <div class="sidebar-brand-sub">Panel Administrativo BI</div>
+          </div>
+          <button type="button" class="sidebar-mobile-close-btn" onclick="window.toggleMobileSidebar(false)"
+            title="Cerrar menú">✕</button>
+        </div>
+
+        <div class="sidebar-section-label">Dashboards Consolidados</div>
+        <nav class="sidebar-nav">
+          <button type="button" class="sidebar-nav-btn active" data-nav="hub"
+            onclick="window.switchPortalView('hub'); window.toggleMobileSidebar(false);">
+            <span>🏛️ Panel de Dashboards</span>
+            <span class="sidebar-badge">BI</span>
+          </button>
+          <button type="button" class="sidebar-nav-btn" data-nav="pymes_all"
+            onclick="window.selectAndOpenDashboard('pymes_all'); window.toggleMobileSidebar(false);">
+            <span>🏢 Pymes (Consolidado)</span>
+            <span class="sidebar-badge">#1 y #2</span>
+          </button>
+          <button type="button" class="sidebar-nav-btn" data-nav="retail"
+            onclick="window.selectAndOpenDashboard('retail'); window.toggleMobileSidebar(false);">
+            <span>🛍️ Retail (Consolidado)</span>
+            <span class="sidebar-badge retail">#1 y #2</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-section-label">Administración &amp; Accesos</div>
+        <nav class="sidebar-nav">
+          <button type="button" class="sidebar-nav-btn" data-nav="admin"
+            onclick="window.switchPortalView('admin'); window.toggleMobileSidebar(false);">
+            <span>⚙️ Seguridad &amp; Enlaces QR</span>
+          </button>
+          <button type="button" class="sidebar-nav-btn" onclick="window.toggleGlobalTheme()">
+            <span id="sidebar-theme-label">☀️ Cambiar Modo Visual</span>
+          </button>
+          <button type="button" class="sidebar-nav-btn"
+            onclick="window.openQrModal(window.PortalState.selectedProject); window.toggleMobileSidebar(false);">
+            <span>📱 Código QR de Proyecto</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-status-box">
+        <div style="font-weight:800; color:#ffffff; margin-bottom:0.35rem; display:flex; align-items:center;">
+          <span class="status-dot"></span> Sincronización Activa
+        </div>
+        <div style="line-height:1.5; color:#94a3b8;">
+          • <strong>Últ. actualización:</strong><br>
+          &nbsp;&nbsp;<strong class="update-timestamp" id="last-update-timestamp" style="color:#10b981;">13/11/2026 12:11 PM</strong><br>
+          • <strong>Pymes Consolidado:</strong> En Vivo<br>
+          • <strong>Retail Consolidado:</strong> En Vivo<br>
+          • <strong>Seguridad:</strong> Cifrado SSO
+        </div>
+      </div>
+    </aside>
+
+    <!-- ÁREA DE TRABAJO PRINCIPAL -->
+    <div class="admin-workspace">
+      <!-- TOPBAR EJECUTIVA -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button type="button" class="btn-exec-action" onclick="window.toggleMobileSidebar()" style="display:none;"
+            id="btn-mobile-menu" aria-label="Abrir menú de navegación">
+            ☰
+          </button>
+          <div class="topbar-title-group">
+            <span class="topbar-crumb" id="topbar-crumb">DIRECCIÓN COMERCIAL • PANEL ADMINISTRATIVO • ⏱️ ACTUALIZADO:
+              <strong class="update-timestamp" id="topbar-update-timestamp">13/11/2026 12:11 PM</strong></span>
+            <h1 class="topbar-heading" id="topbar-heading">Centro de Control • Dashboards Consolidados Salesland</h1>
+          </div>
+        </div>
+
+        <div class="topbar-controls">
+          <!-- CONMUTADOR EJECUTIVO DE 3 ESTADOS: CLARO / OSCURO / ADAPTATIVO (APLICA A PORTAL Y DASHBOARDS) -->
+          <div class="theme-mode-segmented" id="btn-global-theme"
+            title="Cambiar visualización entre Claro, Oscuro o Adaptativo (se sincroniza con los Dashboards)">
+            <button type="button" class="theme-seg-btn" data-tmode="light"
+              onclick="window.setPortalThemeMode('light')">☀️ Claro</button>
+            <button type="button" class="theme-seg-btn" data-tmode="dark" onclick="window.setPortalThemeMode('dark')">🌙
+              Oscuro</button>
+            <button type="button" class="theme-seg-btn" data-tmode="auto"
+              onclick="window.setPortalThemeMode('auto')">🖥️ Adaptativo</button>
+          </div>
+
+          <span class="exec-control-pill" id="portal-role-badge" style="color:var(--brand-accent);">👑
+            Administrador</span>
+
+          <button type="button" class="btn-exec-action" id="btn-change-pwd" onclick="window.openPwdModal()"
+            title="Cambiar contraseña maestra">
+            🛡️ Clave
+          </button>
+          <button type="button" class="btn-exec-action" onclick="window.lockPortalSession()"
+            style="color:var(--rose); border-color:rgba(244,63,94,0.35);" title="Cerrar sesión segura">
+            🔒 Salir
+          </button>
+        </div>
+      </header>
+
+      <!-- ==================================================================
+           VISTA 1: HUB DE DASHBOARDS CONSOLIDADOS (SIN DATOS DE PRESENTACIÓN RESUMEN)
+           ================================================================== -->
+      <main class="workspace-body" id="hub-main-section">
+        <div class="dashboards-selector-grid">
+          <!-- TARJETA 1: PYMES CONSOLIDADO -->
+          <div class="dash-exec-card selected" id="card-proj-pymes_all" onclick="window.selectCardProject('pymes_all')">
+            <div>
+              <div class="dash-card-top">
+                <span class="dash-pill-badge">🏢 Proyecto Pymes • Consolidado</span>
+                <span style="font-size:0.72rem; font-weight:800; color:var(--emerald);">● EN VIVO</span>
+              </div>
+              <div class="dash-card-title">Salesland Pymes (Consolidado)</div>
+              <div class="dash-card-sub">
+                Dashboard Gerencial Interactivo de Rendimiento Comercial B2B / Pymes (Sub-Proyectos <strong>Pymes #1 y
+                  Pymes #2</strong> unificados con sincronización Power BI).
+              </div>
+            </div>
+
+            <div class="dash-card-mini-kpis">
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Sub-Proyectos</span>
+                <span class="mini-kpi-val">Pymes #1 y #2</span>
+              </div>
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Cobertura</span>
+                <span class="mini-kpi-val">7 Provincias</span>
+              </div>
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Portafolio</span>
+                <span class="mini-kpi-val" style="color:var(--brand-accent);">6 Servicios B2B</span>
+              </div>
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Estado</span>
+                <span class="mini-kpi-val" style="color:var(--emerald);">Sincronizado</span>
+              </div>
+            </div>
+
+            <div class="dash-card-actions" onclick="event.stopPropagation();">
+              <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+                <button type="button" class="btn-exec-action btn-exec-primary"
+                  onclick="window.openEmbeddedProject('pymes_all')">
+                  ⚡ Abrir en Panel Administrativo
+                </button>
+                <a id="link-card-pymes-all"
+                  href="https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/index.html" target="_blank"
+                  rel="noopener" class="btn-exec-action">
+                  ↗ Pantalla Completa
+                </a>
+              </div>
+              <div style="display:flex; gap:0.4rem;">
+                <button type="button" class="btn-exec-action" onclick="window.openQrModal('pymes_all')"
+                  title="Código QR de Pymes Consolidado">
+                  📱 Código QR
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TARJETA 2: RETAIL CONSOLIDADO -->
+          <div class="dash-exec-card retail-card" id="card-proj-retail" onclick="window.selectCardProject('retail')">
+            <div>
+              <div class="dash-card-top">
+                <span class="dash-pill-badge retail">🛍️ Proyecto Retail • Consolidado</span>
+                <span style="font-size:0.72rem; font-weight:800; color:var(--emerald);">● EN VIVO</span>
+              </div>
+              <div class="dash-card-title">Salesland Retail (Consolidado)</div>
+              <div class="dash-card-sub">
+                Dashboard Gerencial independiente del canal <strong>Retail / Cadenas y PDVs</strong> (Sub-Proyectos
+                <strong>Retail #1 y Retail #2</strong> unificados).
+              </div>
+            </div>
+
+            <div class="dash-card-mini-kpis">
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Sub-Proyectos</span>
+                <span class="mini-kpi-val">Retail #1 y #2</span>
+              </div>
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Cobertura</span>
+                <span class="mini-kpi-val">Cadenas y PDVs</span>
+              </div>
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Portafolio</span>
+                <span class="mini-kpi-val" style="color:var(--retail-accent);">Móvil &amp; Hogar</span>
+              </div>
+              <div class="mini-kpi-item">
+                <span class="mini-kpi-lbl">Estado</span>
+                <span class="mini-kpi-val" style="color:var(--emerald);">Sincronizado</span>
+              </div>
+            </div>
+
+            <div class="dash-card-actions" onclick="event.stopPropagation();">
+              <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+                <button type="button" class="btn-exec-action btn-exec-primary"
+                  style="background:linear-gradient(135deg,#d97706,#b45309); border-color:#d97706;"
+                  onclick="window.openEmbeddedProject('retail')">
+                  ⚡ Abrir en Panel Administrativo
+                </button>
+                <a id="link-card-retail"
+                  href="https://saleslandretail24-afk.github.io/Salesland-Dashboard-Retail-P1/index.html"
+                  target="_blank" rel="noopener" class="btn-exec-action">
+                  ↗ Pantalla Completa
+                </a>
+              </div>
+              <div style="display:flex; gap:0.4rem;">
+                <button type="button" class="btn-exec-action" onclick="window.openQrModal('retail')"
+                  title="Código QR de Retail Consolidado">
+                  📱 Código QR
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ==================================================================
+           VISTA 2: VISOR INTEGRADO DE DASHBOARDS
+           ================================================================== -->
+      <section id="embedded-viewer-section">
+        <div class="viewer-exec-ribbon">
+          <div class="viewer-ribbon-top">
+            <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+              <button type="button" class="btn-exec-action" onclick="window.switchPortalView('hub')">
+                ⬅ Volver al Panel de Dashboards
+              </button>
+              <strong id="viewer-active-title"
+                style="font-family:'Outfit',sans-serif; font-size:0.95rem; color:var(--brand-accent);">
+                🏢 Proyecto Salesland Pymes (Consolidado)
+              </strong>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <button type="button" class="btn-exec-action" id="viewer-qr-btn"
+                onclick="window.openQrModal('pymes_all')">
+                📱 QR del Proyecto
+              </button>
+              <a id="viewer-external-link"
+                href="https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/index.html" target="_blank"
+                rel="noopener" class="btn-exec-action btn-exec-primary">
+                ↗ Abrir en Pestaña Independiente
+              </a>
+            </div>
+          </div>
+        </div>
+        <iframe id="dashboard-iframe" src="about:blank" title="Visor Ejecutivo Salesland"></iframe>
+      </section>
+
+      <!-- ==================================================================
+           VISTA 3: PANEL DE ADMINISTRACIÓN, SEGURIDAD Y ENLACES OFICIALES
+           ================================================================== -->
+      <section class="workspace-body" id="admin-settings-section">
+        <div class="admin-settings-grid">
+          <div class="admin-box">
+            <div class="admin-box-title">🛡️ Control de Seguridad &amp; Sesión Única (SSO)</div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5; margin-bottom:1rem;">
+              Este portal y los dashboards consolidados comparten el mismo motor de autenticación segura. Al
+              autenticarte aquí o cambiar el tema Claro/Oscuro/Adaptativo, tu preferencia se aplica en toda la suite.
+            </p>
+            <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+              <button type="button" class="btn-exec-action btn-exec-primary" onclick="window.openPwdModal()">
+                🔑 Cambiar Contraseña Maestra
+              </button>
+              <button type="button" class="btn-exec-action" onclick="window.toggleGlobalTheme()">
+                🌓 Alternar Modo Claro / Oscuro
+              </button>
+              <button type="button" class="btn-exec-action" onclick="window.lockPortalSession()"
+                style="color:var(--rose);">
+                🔒 Cerrar Sesión Activa
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-box">
+            <div class="admin-box-title">🌐 Enlaces Oficiales &amp; Códigos QR Consolidados</div>
+            <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.85rem;">
+              Enlaces permanentes en GitHub Pages para compartir con Gerencia y Supervisores:
+            </p>
+            <div style="display:flex; flex-direction:column; gap:0.55rem;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;"
+                class="proj-url-box">
+                <span>🏢 Pymes: https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/index.html</span>
+                <button type="button" class="btn-exec-action" onclick="window.openQrModal('pymes_all')">📱 QR</button>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;"
+                class="proj-url-box">
+                <span>🛍️ Retail:
+                  https://saleslandretail24-afk.github.io/Salesland-Dashboard-Retail-P1/index.html</span>
+                <button type="button" class="btn-exec-action" onclick="window.openQrModal('retail')">📱 QR</button>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem;"
+                class="proj-url-box">
+                <span>🌐 Portal: https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/portal.html</span>
+                <button type="button" class="btn-exec-action" onclick="window.openQrModal('portal')">📱 QR</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- BARRA DE NAVEGACIÓN MÓVIL (TELÉFONOS Y TABLETS VERTICALES) -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Navegación rápida móvil">
+    <button type="button" class="mob-nav-item active" data-mob-nav="hub"
+      onclick="window.switchPortalView('hub'); window.toggleMobileSidebar(false);">
+      <span class="mob-nav-ico">🏛️</span>
+      <span>Inicio</span>
+    </button>
+    <button type="button" class="mob-nav-item" data-mob-nav="pymes_all"
+      onclick="window.selectAndOpenDashboard('pymes_all'); window.toggleMobileSidebar(false);">
+      <span class="mob-nav-ico">🏢</span>
+      <span>Pymes</span>
+    </button>
+    <button type="button" class="mob-nav-item" data-mob-nav="retail"
+      onclick="window.selectAndOpenDashboard('retail'); window.toggleMobileSidebar(false);">
+      <span class="mob-nav-ico">🛍️</span>
+      <span>Retail</span>
+    </button>
+    <button type="button" class="mob-nav-item" data-mob-nav="admin"
+      onclick="window.switchPortalView('admin'); window.toggleMobileSidebar(false);">
+      <span class="mob-nav-ico">⚙️</span>
+      <span>Ajustes/QR</span>
+    </button>
+  </nav>
+
+  <!-- ======================================================================
+       MODAL DE CÓDIGO QR POR PROYECTO CONSOLIDADO
+       ====================================================================== -->
+  <div class="modal-overlay" id="portal-qr-modal">
+    <div class="auth-card" style="max-width:460px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+        <strong style="font-size:1.05rem; color:#f8fafc;">📱 Compartir Dashboard Consolidado (QR)</strong>
+        <button type="button" onclick="document.getElementById('portal-qr-modal').classList.remove('open')"
+          style="background:none; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;">✕</button>
+      </div>
+
+      <select id="portal-qr-select" onchange="window.openQrModal(this.value)"
+        style="width:100%; padding:0.55rem; border-radius:8px; background:#050b18; color:#f8fafc; border:1px solid rgba(56,189,248,0.35); font-weight:700; font-size:0.8rem; margin-bottom:0.9rem;">
+        <option value="portal">🌐 Portal Central (Dashboards Consolidados)</option>
+        <option value="pymes_all">🏢 Proyecto Salesland Pymes (Consolidado)</option>
+        <option value="retail">🛍️ Proyecto Salesland Retail (Consolidado)</option>
+      </select>
+
+      <div style="background:#fff; padding:1rem; border-radius:12px; display:inline-block; margin-bottom:0.85rem;">
+        <img id="portal-qr-img" src="" alt="Código QR" width="200" height="200" style="display:block;">
+        <div id="portal-qr-badge"
+          style="margin-top:0.45rem; font-size:0.72rem; font-weight:800; color:#0369a1; background:#e0f2fe; padding:0.2rem 0.5rem; border-radius:5px;">
+          PROYECTO SALESLAND
+        </div>
+      </div>
+
+      <div class="proj-url-box" id="portal-qr-url"
+        style="margin-bottom:1rem; text-align:left; background:#050b18; color:#38bdf8;"></div>
+
+      <div style="display:flex; gap:0.5rem; justify-content:center;">
+        <button type="button" class="auth-btn-submit" id="btn-copy-portal-qr" onclick="window.copyPortalQrUrl()"
+          style="flex:1;">
+          📋 Copiar Enlace
+        </button>
+        <button type="button" class="btn-exec-action"
+          onclick="document.getElementById('portal-qr-modal').classList.remove('open')"
+          style="padding:0.75rem 1rem; background:#0f172a; color:#fff;">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PARA CAMBIAR CONTRASEÑA (SOLO ADMIN) -->
+  <div class="modal-overlay" id="portal-pwd-modal">
+    <div class="auth-card" style="max-width:440px; text-align:left;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <strong style="font-size:1.05rem; color:#f8fafc;">🛡️ Cambiar Contraseña de Acceso</strong>
+        <button type="button" onclick="document.getElementById('portal-pwd-modal').classList.remove('open')"
+          style="background:none; border:none; color:#94a3b8; font-size:1.3rem; cursor:pointer;">✕</button>
+      </div>
+      <div class="auth-error-banner" id="pwd-modal-err">
+        <span>⚠️</span>
+        <span id="pwd-modal-err-msg">Error</span>
+      </div>
+      <div class="auth-input-wrapper">
+        <input type="password" id="pwd-old" class="auth-input" placeholder="Contraseña actual..."
+          style="padding-left:0.9rem;">
+      </div>
+      <div class="auth-input-wrapper">
+        <input type="password" id="pwd-new" class="auth-input" placeholder="Nueva contraseña (mín. 8 caracteres)..."
+          style="padding-left:0.9rem;">
+      </div>
+      <div class="auth-input-wrapper">
+        <input type="password" id="pwd-confirm" class="auth-input" placeholder="Confirmar nueva contraseña..."
+          style="padding-left:0.9rem;">
+      </div>
+      <div style="display:flex; gap:0.5rem; margin-top:1rem;">
+        <button type="button" class="auth-btn-submit" onclick="window.savePortalPassword()" style="flex:1;">Guardar
+          Clave</button>
+        <button type="button" class="btn-exec-action"
+          onclick="document.getElementById('portal-pwd-modal').classList.remove('open')"
+          style="background:#0f172a; color:#fff;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ======================================================================
+    // 🛡️ MOTOR DE SEGURIDAD SERVER-SIDE (SCRYPT HASH + HTTPONLY SESSION + KDF)
+    // ======================================================================
+    window.escapeHtml = function (val) {
+      return String(val === null || val === undefined ? '' : val)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    };
+
+    window.SaleslandSecurity = {
+      _sessionState: {
+        authenticated: false,
+        role: 'supervisor',
+        username: '',
+        name: ''
+      },
+      _failedAttempts: 0,
+      _lockoutUntil: 0,
+
+      _syncBrowserSsoState(role, remember = true) {
+        const r = (role === 'admin') ? 'admin' : 'supervisor';
+        try {
+          sessionStorage.setItem('salesland_user_role', r);
+          if (r === 'admin') {
+            sessionStorage.setItem('salesland_auth_session_active', 'valid');
+            sessionStorage.removeItem('salesland_supervisor_token');
+            if (remember) {
+              localStorage.setItem('salesland_auth_remember_token', 'active');
+              localStorage.setItem('salesland_user_role', 'admin');
+              localStorage.removeItem('salesland_supervisor_token');
+            }
+          } else {
+            sessionStorage.setItem('salesland_supervisor_token', 'valid');
+            sessionStorage.removeItem('salesland_auth_session_active');
+            if (remember) {
+              localStorage.setItem('salesland_supervisor_token', 'valid');
+              localStorage.setItem('salesland_user_role', 'supervisor');
+              localStorage.removeItem('salesland_auth_remember_token');
+            }
+          }
+        } catch (e) { }
+      },
+
+      _clearBrowserSsoState() {
+        const keys = [
+          'salesland_auth_session_active',
+          'salesland_auth_remember_token',
+          'salesland_supervisor_token',
+          'salesland_user_role'
+        ];
+        keys.forEach(k => {
+          try { localStorage.removeItem(k); } catch (e) { }
+          try { sessionStorage.removeItem(k); } catch (e) { }
+        });
+      },
+
+      isRateLimited() {
+        return Date.now() < this._lockoutUntil;
+      },
+
+      getRemainingLockoutSeconds() {
+        return Math.max(0, Math.ceil((this._lockoutUntil - Date.now()) / 1000));
+      },
+
+      recordFailedAttempt(retryAfterSec) {
+        this._failedAttempts += 1;
+        if (retryAfterSec && retryAfterSec > 0) {
+          this._lockoutUntil = Date.now() + (retryAfterSec * 1000);
+        } else if (this._failedAttempts >= 5) {
+          this._lockoutUntil = Date.now() + (15 * 60 * 1000);
+        }
+      },
+
+      resetAttempts() {
+        this._failedAttempts = 0;
+        this._lockoutUntil = 0;
+      },
+
+      async _verifyStaticKdf(secret, ctx, allowedDigests) {
+        try {
+          const enc = new TextEncoder();
+          const keyMat = await crypto.subtle.importKey('raw', enc.encode(String(secret || '')), { name: 'PBKDF2' }, false, ['deriveBits']);
+          const bits = await crypto.subtle.deriveBits(
+            { name: 'PBKDF2', salt: enc.encode('sl_kdf_v2_' + ctx), iterations: 100000, hash: 'SHA-256' },
+            keyMat,
+            256
+          );
+          const b64 = btoa(String.fromCharCode(...new Uint8Array(bits)));
+          return allowedDigests.includes(b64);
+        } catch (e) {
+          return false;
+        }
+      },
+
+      _checkLocalSsoFallback() {
+        try {
+          const admActive = sessionStorage.getItem('salesland_auth_session_active') === 'valid' || localStorage.getItem('salesland_auth_remember_token') === 'active';
+          if (admActive) {
+            this._sessionState = { authenticated: true, role: 'admin', username: 'admin', name: 'Administrador General' };
+            return true;
+          }
+          const supActive = sessionStorage.getItem('salesland_supervisor_token') === 'valid' || localStorage.getItem('salesland_supervisor_token') === 'valid';
+          if (supActive) {
+            this._sessionState = { authenticated: true, role: 'supervisor', username: 'supervisores', name: 'Equipo de Supervisores' };
+            return true;
+          }
+        } catch (e) { }
+        return false;
+      },
+
+      async verifyServerSession() {
+        const hasLocalSso = this._checkLocalSsoFallback();
+        try {
+          const res = await fetch('/api/auth/session', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' },
+            cache: 'no-store'
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.authenticated) {
+              const role = data.role === 'admin' ? 'admin' : 'supervisor';
+              this._sessionState = {
+                authenticated: true,
+                role,
+                username: String(data.username || ''),
+                name: String(data.name || '')
+              };
+              this._syncBrowserSsoState(role, true);
+              return true;
+            }
+          }
+        } catch (e) { }
+        if (hasLocalSso) return true;
+        this._sessionState.authenticated = false;
+        return false;
+      },
+
+      checkExistingSession() {
+        if (this._sessionState.authenticated) return true;
+        return this._checkLocalSsoFallback();
+      },
+
+      getValidatedRole() {
+        if (this._sessionState.authenticated && this._sessionState.role === 'admin') return 'admin';
+        try {
+          if (sessionStorage.getItem('salesland_auth_session_active') === 'valid' || localStorage.getItem('salesland_auth_remember_token') === 'active') {
+            return 'admin';
+          }
+        } catch (e) { }
+        return 'supervisor';
+      },
+
+      async loginOnServer(mode, secret, remember = true) {
+        if (this.isRateLimited()) {
+          return {
+            ok: false,
+            status: 429,
+            error: `Demasiados intentos fallidos. Por seguridad, espere ${this.getRemainingLockoutSeconds()} segundos.`
+          };
+        }
+        const cleanSecret = String(secret || '').trim();
+        if (!cleanSecret || cleanSecret.length > 128) {
+          return { ok: false, status: 400, error: 'Credenciales inválidas. Verifique sus datos.' };
+        }
+        const targetRole = (mode === 'admin') ? 'admin' : 'supervisor';
+
+        // 1. Intentar validación en Servidor Node.js (/api/auth/login)
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              mode: targetRole,
+              roleMode: targetRole,
+              secret: cleanSecret,
+              remember: !!remember
+            })
+          });
+          if (res.status === 200 || res.status === 401 || res.status === 429) {
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data && (data.ok || data.success)) {
+              this.resetAttempts();
+              const resolvedRole = data.role === 'admin' || (data.user && data.user.role === 'admin') ? 'admin' : 'supervisor';
+              this._sessionState = {
+                authenticated: true,
+                role: resolvedRole,
+                username: String(data.username || (data.user && data.user.username) || ''),
+                name: String(data.name || (data.user && data.user.name) || '')
+              };
+              this._syncBrowserSsoState(resolvedRole, remember);
+              return { ok: true, role: resolvedRole };
+            }
+            if (res.status === 429) {
+              this.recordFailedAttempt(data.retryAfterSeconds || 900);
+            } else {
+              this.recordFailedAttempt(0);
+            }
+            return {
+              ok: false,
+              status: res.status,
+              error: data.error || 'Credenciales inválidas. Verifique sus datos e intente nuevamente.'
+            };
+          }
+        } catch (e) {
+          // Entorno estático (GitHub Pages / file://) -> Usar verificación PBKDF2 WebCrypto
+        }
+
+        // 2. Respaldo Criptográfico PBKDF2-HMAC-SHA256 para GitHub Pages (alojamiento estático)
+        const isMatch = (targetRole === 'admin')
+          ? await this._verifyStaticKdf(cleanSecret, 'adm', [
+            'Q7gOL5Afcu/twXscN9LyuOngIVUjurRBPNnXHAsWXUY=',
+            'cxJMJByEyNIeeN1HLAGHrDr9kxibjPx2hbtw4ufaoZU='
+          ])
+          : await this._verifyStaticKdf(cleanSecret, 'sup', [
+            'fIQdrnDh9igm4W8F5AG6BkoKFNY5R6O9VDd2meMqhiE='
+          ]);
+
+        if (isMatch) {
+          this.resetAttempts();
+          this._sessionState = {
+            authenticated: true,
+            role: targetRole,
+            username: targetRole === 'admin' ? 'admin' : 'supervisores',
+            name: targetRole === 'admin' ? 'Administrador General' : 'Equipo de Supervisores'
+          };
+          this._syncBrowserSsoState(targetRole, remember);
+          return { ok: true, role: targetRole };
+        }
+
+        this.recordFailedAttempt(0);
+        return {
+          ok: false,
+          status: 401,
+          error: 'Credenciales inválidas. Verifique sus datos e intente nuevamente.'
+        };
+      },
+
+      unlockPortal() {
+        const overlay = document.getElementById('auth-gateway-overlay');
+        const wrapper = document.getElementById('portal-wrapper');
+        if (overlay) overlay.classList.add('hidden');
+        if (wrapper) wrapper.classList.remove('auth-locked');
+        const role = this.getValidatedRole();
+        const badge = document.getElementById('portal-role-badge');
+        const pwdBtn = document.getElementById('btn-change-pwd');
+        if (badge) badge.innerHTML = role === 'admin' ? '👑 Administrador' : '👔 Supervisor';
+        if (pwdBtn) pwdBtn.style.display = role === 'admin' ? 'inline-flex' : 'none';
+        if (typeof window.refreshPortalProjectLinks === 'function') {
+          window.refreshPortalProjectLinks();
+        }
+      },
+
+      async lockPortal() {
+        this._clearBrowserSsoState();
+        this._sessionState = { authenticated: false, role: 'supervisor', username: '', name: '' };
+        try {
+          await fetch('/api/auth/logout', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' }
+          });
+        } catch (e) { }
+        const overlay = document.getElementById('auth-gateway-overlay');
+        const wrapper = document.getElementById('portal-wrapper');
+        if (overlay) overlay.classList.remove('hidden');
+        if (wrapper) wrapper.classList.add('auth-locked');
+      }
+    };
+
+    window.setAuthMode = function (mode) {
+      const tM = document.getElementById('auth-tab-master');
+      const tU = document.getElementById('auth-tab-user');
+      const fM = document.getElementById('auth-form-master');
+      const fU = document.getElementById('auth-form-user');
+      const err = document.getElementById('auth-error-banner');
+      if (err) err.style.display = 'none';
+      if (mode === 'master') {
+        tM.style.background = '#0284c7'; tM.style.color = '#fff';
+        tU.style.background = 'transparent'; tU.style.color = '#94a3b8';
+        fM.style.display = 'block'; fU.style.display = 'none';
+      } else {
+        tM.style.background = 'transparent'; tM.style.color = '#94a3b8';
+        tU.style.background = '#0284c7'; tU.style.color = '#fff';
+        fM.style.display = 'none'; fU.style.display = 'block';
+      }
+    };
+
+    window.toggleInputVis = function (id) {
+      const el = document.getElementById(id);
+      if (el) el.type = el.type === 'password' ? 'text' : 'password';
+    };
+
+    window.submitPortalAdminAuth = async function () {
+      const input = document.getElementById('auth-password-input');
+      const err = document.getElementById('auth-error-banner');
+      const msg = document.getElementById('auth-error-msg');
+      const remember = !!document.getElementById('auth-remember-checkbox')?.checked;
+      const result = await window.SaleslandSecurity.loginOnServer('admin', input.value || '', remember);
+      if (result.ok) {
+        window.SaleslandSecurity.unlockPortal();
+        if (err) err.style.display = 'none';
+        input.value = '';
+      } else {
+        if (msg) msg.textContent = result.error;
+        if (err) err.style.display = 'flex';
+        input.value = '';
+        input.focus();
+      }
+    };
+
+    window.submitPortalSupervisorAuth = async function () {
+      const input = document.getElementById('auth-supervisor-pin-input');
+      const err = document.getElementById('auth-error-banner');
+      const msg = document.getElementById('auth-error-msg');
+      const remember = !!document.getElementById('auth-supervisor-remember-checkbox')?.checked;
+      const pin = (input.value || '').trim();
+      const result = await window.SaleslandSecurity.loginOnServer('supervisor', pin, remember);
+      if (result.ok) {
+        window.SaleslandSecurity.unlockPortal();
+        if (err) err.style.display = 'none';
+        input.value = '';
+      } else {
+        if (msg) msg.textContent = result.error;
+        if (err) err.style.display = 'flex';
+        input.value = '';
+        input.focus();
+      }
+    };
+
+    window.lockPortalSession = function () {
+      if (confirm('¿Deseas cerrar la sesión segura del Panel Administrativo?')) {
+        window.SaleslandSecurity.lockPortal();
+      }
+    };
+
+    // ======================================================================
+    // ESTADO GLOBAL DEL PORTAL Y SINCRONIZACIÓN DE TEMA CLARO / OSCURO
+    // ======================================================================
+    const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+    const PYMES_BASE_URL = isLocalHost ? 'index.html' : 'https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/index.html';
+    const RETAIL_BASE_URL = 'https://saleslandretail24-afk.github.io/Salesland-Dashboard-Retail-P1/index.html';
+    const PORTAL_PUBLIC_URL = 'https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/portal.html';
+
+    window.PortalState = {
+      selectedProject: 'pymes_all',
+      theme: localStorage.getItem('salesland_theme') || 'dark',
+      themeMode: localStorage.getItem('salesland_theme_mode') || 'dark',
+      currentView: 'hub'
+    };
+
+    const PROJECTS_MAP = {
+      portal: {
+        title: '🌐 Portal Central Salesland (Pymes & Retail)',
+        url: PORTAL_PUBLIC_URL,
+        publicUrl: PORTAL_PUBLIC_URL
+      },
+      pymes_all: {
+        title: '🏢 Proyecto Salesland Pymes (Consolidado)',
+        url: PYMES_BASE_URL,
+        publicUrl: 'https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/index.html'
+      },
+      retail: {
+        title: '🛍️ Proyecto Salesland Retail (Consolidado)',
+        url: RETAIL_BASE_URL,
+        publicUrl: RETAIL_BASE_URL
+      }
+    };
+
+    window.refreshPortalProjectLinks = function () {
+      const curTheme = window.PortalState.theme || 'dark';
+      const curRole = window.SaleslandSecurity.getValidatedRole();
+      const ssoQuery = `?auth=bypass&role=${curRole}&theme=${curTheme}`;
+      const linkPymes = document.getElementById('link-card-pymes-all');
+      const linkRetail = document.getElementById('link-card-retail');
+      if (linkPymes) linkPymes.href = PROJECTS_MAP.pymes_all.url + ssoQuery;
+      if (linkRetail) linkRetail.href = PROJECTS_MAP.retail.url + ssoQuery;
+    };
+
+    window.resolveEffectiveTheme = function (mode) {
+      if (mode === 'auto') {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        return prefersDark ? 'dark' : 'light';
+      }
+      return (mode === 'light') ? 'light' : 'dark';
+    };
+
+    window.applyPortalTheme = function (theme, skipIframeBroadcast) {
+      const t = (theme === 'light') ? 'light' : 'dark';
+      window.PortalState.theme = t;
+      document.documentElement.setAttribute('data-theme', t);
+      try {
+        localStorage.setItem('salesland_theme', t);
+        localStorage.setItem('salesland_pymes_visual_option', t === 'light' ? '1' : '2');
+      } catch (e) { }
+
+      window.refreshPortalProjectLinks();
+
+      if (!skipIframeBroadcast) {
+        const iframe = document.getElementById('dashboard-iframe');
+        if (iframe && iframe.contentWindow) {
+          try {
+            iframe.contentWindow.postMessage({ type: 'SALESLAND_SET_THEME', theme: t }, '*');
+          } catch (e) { }
+        }
+      }
+    };
+
+    window.setPortalThemeMode = function (mode, skipBroadcast) {
+      const validMode = (mode === 'light' || mode === 'dark' || mode === 'auto') ? mode : 'dark';
+      window.PortalState.themeMode = validMode;
+      try { localStorage.setItem('salesland_theme_mode', validMode); } catch (e) { }
+      const effective = window.resolveEffectiveTheme(validMode);
+      window.applyPortalTheme(effective, skipBroadcast);
+      document.querySelectorAll('.theme-seg-btn[data-tmode]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tmode') === validMode);
+      });
+      const sideEl = document.getElementById('sidebar-theme-label');
+      if (sideEl) {
+        const modeNames = { light: '☀️ Tema: Claro', dark: '🌙 Tema: Oscuro', auto: '🖥️ Tema: Adaptativo' };
+        sideEl.textContent = modeNames[validMode] + ' (Cambiar)';
+      }
+    };
+
+    window.toggleGlobalTheme = function () {
+      const order = ['dark', 'light', 'auto'];
+      const cur = window.PortalState.themeMode || 'dark';
+      const next = order[(order.indexOf(cur) + 1) % order.length];
+      window.setPortalThemeMode(next, false);
+    };
+
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+        if (window.PortalState.themeMode === 'auto') {
+          window.setPortalThemeMode('auto', false);
+        }
+      });
+    }
+
+    // Escuchar cambio de tema desde el dashboard incrustado
+    window.addEventListener('message', function (ev) {
+      const d = ev.data;
+      if (!d || typeof d !== 'object') return;
+      if (d.type === 'SALESLAND_THEME_SYNC' && (d.theme === 'light' || d.theme === 'dark')) {
+        if (d.theme !== window.PortalState.theme) {
+          window.applyPortalTheme(d.theme, true);
+        }
+      }
+    });
+
+    // ======================================================================
+    // NAVEGACIÓN MÓVIL Y VISTAS DEL PANEL ADMINISTRATIVO
+    // ======================================================================
+    window.toggleMobileSidebar = function (forceState) {
+      const sidebar = document.getElementById('admin-sidebar');
+      const backdrop = document.getElementById('mobile-sidebar-backdrop');
+      if (!sidebar) return;
+      const shouldOpen = (typeof forceState === 'boolean') ? forceState : !sidebar.classList.contains('mobile-open');
+      sidebar.classList.toggle('mobile-open', shouldOpen);
+      if (backdrop) backdrop.classList.toggle('active', shouldOpen);
+    };
+
+    window.syncMobileNavHighlight = function (viewKey) {
+      document.querySelectorAll('#mobile-bottom-nav .mob-nav-item[data-mob-nav]').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-mob-nav') === viewKey);
+      });
+    };
+
+    window.selectCardProject = function (projKey) {
+      window.PortalState.selectedProject = (projKey === 'retail') ? 'retail' : 'pymes_all';
+      document.getElementById('card-proj-pymes_all')?.classList.toggle('selected', window.PortalState.selectedProject === 'pymes_all');
+      document.getElementById('card-proj-retail')?.classList.toggle('selected', window.PortalState.selectedProject === 'retail');
+    };
+
+    window.switchPortalView = function (viewKey) {
+      window.PortalState.currentView = viewKey;
+      document.querySelectorAll('.sidebar-nav-btn[data-nav]').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-nav') === viewKey);
+      });
+      window.syncMobileNavHighlight(viewKey);
+
+      const hub = document.getElementById('hub-main-section');
+      const viewer = document.getElementById('embedded-viewer-section');
+      const admin = document.getElementById('admin-settings-section');
+
+      if (viewKey === 'hub') {
+        if (hub) hub.style.display = 'flex';
+        if (viewer) viewer.style.display = 'none';
+        if (admin) admin.style.display = 'none';
+      } else if (viewKey === 'admin') {
+        if (hub) hub.style.display = 'none';
+        if (viewer) viewer.style.display = 'none';
+        if (admin) admin.style.display = 'flex';
+      } else {
+        if (hub) hub.style.display = 'none';
+        if (viewer) viewer.style.display = 'flex';
+        if (admin) admin.style.display = 'none';
+      }
+    };
+
+    window.selectAndOpenDashboard = function (projKey) {
+      window.selectCardProject(projKey);
+      window.openEmbeddedProject(projKey);
+    };
+
+    window.openEmbeddedProject = function (projKey) {
+      const key = (projKey === 'retail') ? 'retail' : 'pymes_all';
+      window.selectCardProject(key);
+      const cfg = PROJECTS_MAP[key];
+      window.switchPortalView(key);
+
+      const iframe = document.getElementById('dashboard-iframe');
+      const titleEl = document.getElementById('viewer-active-title');
+      const extLink = document.getElementById('viewer-external-link');
+      const qrBtn = document.getElementById('viewer-qr-btn');
+
+      const activeRole = window.SaleslandSecurity.getValidatedRole();
+      const ssoParams = `auth=bypass&role=${activeRole}&theme=${window.PortalState.theme}`;
+      const targetUrl = cfg.url + (cfg.url.includes('?') ? '&' : '?') + ssoParams;
+      if (titleEl) titleEl.textContent = cfg.title;
+      if (extLink) extLink.href = targetUrl;
+      if (qrBtn) qrBtn.setAttribute('onclick', `window.openQrModal('${key}')`);
+
+      if (iframe) {
+        const curSrc = iframe.getAttribute('data-base-proj');
+        if (curSrc !== key) {
+          iframe.setAttribute('data-base-proj', key);
+          iframe.setAttribute('src', targetUrl);
+          iframe.onload = function () {
+            try {
+              iframe.contentWindow.postMessage({
+                type: 'SALESLAND_SSO_HANDSHAKE',
+                role: window.SaleslandSecurity.getValidatedRole(),
+                ts: Date.now()
+              }, '*');
+              iframe.contentWindow.postMessage({
+                type: 'SALESLAND_SET_THEME',
+                theme: window.PortalState.theme
+              }, '*');
+            } catch (e) { }
+          };
+        } else if (iframe.contentWindow) {
+          try {
+            iframe.contentWindow.postMessage({
+              type: 'SALESLAND_SET_THEME',
+              theme: window.PortalState.theme
+            }, '*');
+          } catch (e) { }
+        }
+      }
+    };
+
+    window.openQrModal = function (projKey) {
+      const cfg = PROJECTS_MAP[projKey] || PROJECTS_MAP.portal;
+      const sel = document.getElementById('portal-qr-select');
+      const img = document.getElementById('portal-qr-img');
+      const badge = document.getElementById('portal-qr-badge');
+      const urlBox = document.getElementById('portal-qr-url');
+      if (sel) sel.value = projKey in PROJECTS_MAP ? projKey : 'portal';
+      if (img) img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(cfg.publicUrl);
+      if (badge) badge.textContent = cfg.title;
+      if (urlBox) urlBox.textContent = cfg.publicUrl;
+      document.getElementById('portal-qr-modal').classList.add('open');
+    };
+
+    window.copyPortalQrUrl = function () {
+      const url = document.getElementById('portal-qr-url')?.textContent || PORTAL_PUBLIC_URL;
+      const btn = document.getElementById('btn-copy-portal-qr');
+      navigator.clipboard.writeText(url).then(() => {
+        if (btn) {
+          btn.textContent = '¡Enlace Copiado! ✓';
+          setTimeout(() => { btn.textContent = '📋 Copiar Enlace'; }, 2000);
+        }
+      });
+    };
+
+    window.openPwdModal = function () {
+      if (window.SaleslandSecurity.getValidatedRole() !== 'admin') {
+        alert('Acceso denegado: validación de administrador requerida.');
+        return;
+      }
+      document.getElementById('pwd-modal-err').style.display = 'none';
+      document.getElementById('pwd-old').value = '';
+      document.getElementById('pwd-new').value = '';
+      document.getElementById('pwd-confirm').value = '';
+      document.getElementById('portal-pwd-modal').classList.add('open');
+    };
+
+    window.savePortalPassword = async function () {
+      const o = document.getElementById('pwd-old').value;
+      const n = document.getElementById('pwd-new').value;
+      const c = document.getElementById('pwd-confirm').value;
+      const err = document.getElementById('pwd-modal-err');
+      const msg = document.getElementById('pwd-modal-err-msg');
+      const showErr = (t) => { msg.textContent = t; err.style.display = 'flex'; };
+      if (!o) return showErr('Ingresa la contraseña actual.');
+      if (!n || n.length < 8) return showErr('Por seguridad, la nueva contraseña debe tener al menos 8 caracteres.');
+      if (n !== c) return showErr('Las nuevas contraseñas no coinciden.');
+      try {
+        const res = await fetch('/api/auth/change-password', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ targetRole: 'admin', currentSecret: o, newSecret: n })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          return showErr(data.error || 'No se pudo actualizar la contraseña en el servidor.');
+        }
+        alert('¡Contraseña actualizada y protegida con hash scrypt en el servidor!');
+        document.getElementById('portal-pwd-modal').classList.remove('open');
+      } catch (e) {
+        showErr('Error de comunicación con el servidor.');
+      }
+    };
+
+    // Inicialización al cargar el Portal Administrativo
+    window.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('portal-wrapper').classList.add('auth-locked');
+      window.setPortalThemeMode(window.PortalState.themeMode, true);
+      window.SaleslandSecurity.verifyServerSession().then(function (isValid) {
+        if (isValid) {
+          window.SaleslandSecurity.unlockPortal();
+        } else {
+          document.getElementById('portal-wrapper').classList.add('auth-locked');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

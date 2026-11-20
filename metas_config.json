@@ -1,0 +1,213 @@
+{
+  "P1": {
+    "Enero": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Febrero": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Marzo": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Abril": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Mayo": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Junio": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Julio": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Agosto": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Septiembre": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Octubre": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Noviembre": {
+      "Doble Play": 50,
+      "One Play": 30,
+      "Triple Play": 20,
+      "Full Claro": 15,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Diciembre": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    }
+  },
+  "P2": {
+    "Enero": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Febrero": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Marzo": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Abril": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Mayo": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Junio": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Julio": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Agosto": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Septiembre": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Octubre": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Noviembre": {
+      "Doble Play": 50,
+      "One Play": 30,
+      "Triple Play": 20,
+      "Full Claro": 15,
+      "Pospago": 5,
+      "Empresas": 5
+    },
+    "Diciembre": {
+      "Doble Play": 70,
+      "One Play": 45,
+      "Triple Play": 25,
+      "Full Claro": 25,
+      "Pospago": 5,
+      "Empresas": 5
+    }
+  },
+  "SELLER": {
+    "Enero": 15,
+    "Febrero": 15,
+    "Marzo": 15,
+    "Abril": 15,
+    "Mayo": 15,
+    "Junio": 15,
+    "Julio": 15,
+    "Agosto": 15,
+    "Septiembre": 15,
+    "Octubre": 15,
+    "Noviembre": 15,
+    "Diciembre": 15
+  },
+  "updatedAt": "2026-11-05T14:45:00.000Z"
+}

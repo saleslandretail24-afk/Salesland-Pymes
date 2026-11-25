@@ -5675,7 +5675,7 @@
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
             <span class="update-label">Última actualización:</span>
-            <strong class="update-timestamp" id="last-update-timestamp">25/11/2026 10:12 AM</strong>
+            <strong class="update-timestamp" id="last-update-timestamp">25/11/2026 12:00 PM</strong>
           </div>
         </div>
       </div>
@@ -6919,7 +6919,7 @@
                   <span class="cr-card-stat-sub" id="cr-card-rev-avg">Ticket Promedio</span>
                 </div>
                 <div class="cr-card-stat-tile">
-                  <span class="cr-card-stat-label">Puntos Venta</span>
+                  <span class="cr-card-stat-label">Sectores Com.</span>
                   <span class="cr-card-stat-val" id="cr-card-coverage-val" style="color:#8b5cf6;">-</span>
                   <span class="cr-card-stat-sub" id="cr-card-canton-count">Cantones</span>
                 </div>
@@ -6945,10 +6945,10 @@
                 </div>
               </div>
 
-              <!-- Top Retail Stores / PDVs in this zone -->
+              <!-- Top Sectores Comerciales in this zone -->
               <div class="cr-card-top-stores">
                 <div style="font-size:0.75rem; font-weight:800; color:var(--text-primary); display:flex; justify-content:space-between; align-items:center;">
-                  <span>🏪 Top Tiendas / Puntos de Venta</span>
+                  <span>🏢 Top Sectores Comerciales</span>
                   <span id="lbl-card-store-count" style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">En esta zona</span>
                 </div>
                 <div id="cr-card-top-pdvs-list" style="display:flex; flex-direction:column; gap:0.35rem;">
@@ -6995,7 +6995,7 @@
                 <span>🗺️</span> 2. Cantones (Intermedio)
               </button>
               <button type="button" class="cr-hier-tab-btn" id="btn-hier-tab-pdv" onclick="window.switchGeoSubTab('pdvs')">
-                <span>🏪</span> 3. Puntos de Venta (Retail)
+                <span>🏢</span> 3. Sectores Comerciales
               </button>
             </div>
           </div>
@@ -7074,35 +7074,35 @@
             </div>
           </div>
 
-          <!-- SUB-PANEL 3: PUNTOS DE VENTA (RETAIL / TIENDAS) -->
+          <!-- SUB-PANEL 3: SECTORES COMERCIALES (PYMES) -->
           <div id="cr-subpanel-pdvs" style="display:none;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; gap:0.5rem;">
               <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-                <input type="text" id="cr-filter-pdv-input" class="cr-geo-search-field" placeholder="Buscar sector o PDV (ej. Comercio, Taller, Soda, Restaurante)..." style="width:280px;" oninput="window.filterPdvsTable(this.value)">
+                <input type="text" id="cr-filter-pdv-input" class="cr-geo-search-field" placeholder="Buscar sector comercial (ej. Comercio, Taller, Soda, Restaurante)..." style="width:280px;" oninput="window.filterPdvsTable(this.value)">
                 <div class="chart-mode-pill-group" style="display:flex; background:rgba(0,0,0,0.05); padding:3px; border-radius:8px; gap:3px;">
                   <button type="button" class="btn-pdv-filter-canal active" data-canal="all" onclick="window.filterPdvByCanal('all')">Todos</button>
-                  <button type="button" class="btn-pdv-filter-canal" data-canal="INSTALADA" onclick="window.filterPdvByCanal('INSTALADA')">Instaladas</button>
-                  <button type="button" class="btn-pdv-filter-canal" data-canal="EN GESTIÓN" onclick="window.filterPdvByCanal('EN GESTIÓN')">En Gestión</button>
+                  <button type="button" class="btn-pdv-filter-canal" data-canal="Pymes #1" onclick="window.filterPdvByCanal('Pymes #1')">Pymes #1</button>
+                  <button type="button" class="btn-pdv-filter-canal" data-canal="Pymes #2" onclick="window.filterPdvByCanal('Pymes #2')">Pymes #2</button>
                 </div>
               </div>
               <div style="display:flex; align-items:center; gap:0.5rem;">
-                <span id="cr-pdvs-table-count" style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">0 tiendas activas</span>
-                <button type="button" class="btn-action" onclick="window.exportPdvsExcel()" style="padding:0.35rem 0.65rem; font-size:0.74rem; background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); border-radius:6px; font-weight:700;" title="Descargar tiendas en Excel">
-                  📥 Exportar Tiendas (.xlsx)
+                <span id="cr-pdvs-table-count" style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">0 sectores activos</span>
+                <button type="button" class="btn-action" onclick="window.exportPdvsExcel()" style="padding:0.35rem 0.65rem; font-size:0.74rem; background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); border-radius:6px; font-weight:700;" title="Descargar sectores comerciales en Excel">
+                  📥 Exportar Sectores (.xlsx)
                 </button>
               </div>
             </div>
 
-            <!-- PDV Table -->
+            <!-- Sector Comercial Table -->
             <div class="cr-table-scroll-container">
               <table class="cr-geo-data-table">
                 <thead>
                   <tr>
                     <th style="width:40px;">#</th>
-                    <th>Punto de Venta / Tienda</th>
+                    <th>Sector Comercial</th>
                     <th>Cantón</th>
                     <th>Provincia</th>
-                    <th>Canal</th>
+                    <th>Célula / Grupo</th>
                     <th style="text-align:center;">Doble Play</th>
                     <th style="text-align:center;">One Play</th>
                     <th style="text-align:center;">Triple Play</th>
@@ -7688,13 +7688,13 @@
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.83rem; border-top:1px dashed var(--border-card, #e2e8f0); padding-top:0.6rem;">
           <div style="display:flex; align-items:center; gap:0.45rem;">
-            <span>🏢</span> <strong>Célula Pymes #1 (data_p1.js?v=20261125101254)</strong>
+            <span>🏢</span> <strong>Célula Pymes #1 (data_p1.js?v=20261125120043)</strong>
           </div>
           <span id="sync-status-prepago" style="color:var(--text-muted); font-size:0.75rem; font-weight:600;">Sincronizado</span>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.83rem; border-top:1px dashed var(--border-card, #e2e8f0); padding-top:0.6rem;">
           <div style="display:flex; align-items:center; gap:0.45rem;">
-            <span>🏬</span> <strong>Célula Pymes #2 (data_p2.js?v=20261125101254)</strong>
+            <span>🏬</span> <strong>Célula Pymes #2 (data_p2.js?v=20261125120043)</strong>
           </div>
           <span id="sync-status-p2" style="color:var(--text-muted); font-size:0.75rem; font-weight:600;">Sincronizado</span>
         </div>
@@ -7960,11 +7960,11 @@
   </div>
 
   <!-- DATASETS EXTERNOS (generados por actualizar_datos.py) -->
-  <script src="data_p1.js?v=20261125101254" id="data-p1-script"></script>
-  <script src="data_p2.js?v=20261125101254" id="data-p2-script"></script>
+  <script src="data_p1.js?v=20261125120043" id="data-p1-script"></script>
+  <script src="data_p2.js?v=20261125120043" id="data-p2-script"></script>
   <script>
     if (!window.RAW_DATASET) {
-      console.error("No se pudo cargar data_p1.js?v=20261125101254: verifica que este junto a index.html");
+      console.error("No se pudo cargar data_p1.js?v=20261125120043: verifica que este junto a index.html");
       window.RAW_DATASET = [];
     }
     if (!window.RAW_DATASET_P2) window.RAW_DATASET_P2 = [];
@@ -7973,7 +7973,7 @@
   <!-- CLIENT SCRIPT -->
   <script>
     // Embedded dataset of 110,586 records (Pymes #1) y 77,030 registros (Pymes #2)
-    window.LAST_DATA_UPDATE = "25/11/2026 10:12 AM";
+    window.LAST_DATA_UPDATE = "25/11/2026 12:00 PM";
     window.CUSTOM_TARGETS_CONFIG = {"P1":{"Enero":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Febrero":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Marzo":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Abril":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Mayo":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Junio":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Julio":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Agosto":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Septiembre":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Octubre":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Noviembre":{"Doble Play":50,"One Play":30,"Triple Play":20,"Full Claro":15,"Pospago":5,"Empresas":5},"Diciembre":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5}},"P2":{"Enero":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Febrero":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Marzo":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Abril":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Mayo":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Junio":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Julio":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Agosto":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Septiembre":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Octubre":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5},"Noviembre":{"Doble Play":50,"One Play":30,"Triple Play":20,"Full Claro":15,"Pospago":5,"Empresas":5},"Diciembre":{"Doble Play":70,"One Play":45,"Triple Play":25,"Full Claro":25,"Pospago":5,"Empresas":5}},"SELLER":{"Enero":15,"Febrero":15,"Marzo":15,"Abril":15,"Mayo":15,"Junio":15,"Julio":15,"Agosto":15,"Septiembre":15,"Octubre":15,"Noviembre":15,"Diciembre":15},"updatedAt":"2026-11-05T14:45:00.000Z"};
 
     // ======================================================================
@@ -7984,7 +7984,7 @@
 
     const BASE_P1_QUOTA = { 'Doble Play': 70, 'One Play': 45, 'Triple Play': 25, 'Full Claro': 25, 'Pospago': 5, 'Empresas': 5 };
     const BASE_P2_QUOTA = { 'Doble Play': 70, 'One Play': 45, 'Triple Play': 25, 'Full Claro': 25, 'Pospago': 5, 'Empresas': 5 };
-    const BASE_SELLER_QUOTA = 20;
+    const BASE_SELLER_QUOTA = 15;
 
     const DEFAULT_TARGETS_P1 = {};
     const DEFAULT_TARGETS_P2 = {};
@@ -8279,7 +8279,12 @@
 
       const btn = document.getElementById('btn-theme-toggle');
       if (btn) {
-        btn.onclick = () => {
+        btn.onclick = (e) => {
+          if (e) e.preventDefault();
+          if (typeof window.toggleExecutiveThemeSync === 'function') {
+            window.toggleExecutiveThemeSync();
+            return;
+          }
           App.theme = App.theme === 'light' ? 'dark' : 'light';
           document.documentElement.setAttribute('data-theme', App.theme);
           localStorage.setItem('salesland_theme', App.theme);
@@ -8459,31 +8464,41 @@
 
       if (btnDemoP2) {
         btnDemoP2.addEventListener('click', () => {
-          const sampleSups = ['Carlos Méndez P2', 'Laura Gómez P2', 'Esteban Rojas P2', 'Valeria Castillo P2'];
+          const sampleSups = ['Guillermo Marin', 'Alexander Harley Chinchilla', 'Fabian Castro', 'Daniel Fuentes'];
           const sampleSellers = [
             'Andrés Solano Mora', 'María José Castro', 'Roberto Díaz Vega',
             'Natalia Vargas Ramos', 'Kevin Morales Jiménez', 'Daniela Ortiz Brenes'
           ];
-          const sampleServices = ['Prepago', 'Pospago', 'Portabilidad Prepago', 'Portabilidad Postpago', 'Migración Pospago', 'Gpon'];
+          const sampleServices = [
+            ['Doble Play', 'DOBLE PLAY', 26900],
+            ['One Play', 'ONE PLAY', 19500],
+            ['Triple Play', 'TRIPLE PLAY', 34900],
+            ['Full Claro', 'FULL CLARO DOBLE PLAY', 32900],
+            ['Pospago', 'POSPAGO', 15900],
+            ['Empresas', 'EMPRESAS 1', 45000]
+          ];
+          const sampleSectors = ['Comercio', 'Taller', 'Bar Restaurante', 'Soda', 'Abastecedor'];
           const demoRows = [];
           const nowYear = 2026;
-          const nowMonth = (App.filters && App.filters.mes && App.filters.mes !== 'all') ? App.filters.mes : 'Octubre';
+          const monthsMap = { 'enero':'01','febrero':'02','marzo':'03','abril':'04','mayo':'05','junio':'06','julio':'07','agosto':'08','septiembre':'09','octubre':'10','noviembre':'11','diciembre':'12' };
+          const nowMonth = (App.filters && App.filters.mes && App.filters.mes !== 'all') ? App.filters.mes : 'Noviembre';
+          const mPad = monthsMap[nowMonth.toLowerCase()] || '11';
 
-          for (let i = 1; i <= 450; i++) {
+          for (let i = 1; i <= 150; i++) {
             const dayNum = (i % 28) + 1;
             const dayStr = dayNum < 10 ? '0' + dayNum : '' + dayNum;
-            const dateStr = `${nowYear}-10-${dayStr}`;
-            const srv = sampleServices[i % sampleServices.length];
+            const dateStr = `${nowYear}-${mPad}-${dayStr}`;
+            const [srvNorm, subPlan, price] = sampleServices[i % sampleServices.length];
             const seller = sampleSellers[i % sampleSellers.length];
             const sup = sampleSups[i % sampleSups.length];
-            const canal = i % 2 === 0 ? 'Cadenas' : 'Multimarca';
-            const price = srv === 'Prepago' ? 1000 : 10800;
+            const sector = sampleSectors[i % sampleSectors.length];
 
             demoRows.push([
-              dateStr, nowYear, nowMonth, `Cliente P2 ${i}`, `1000${i}`,
-              'Conexión P2', price, canal, 'Tienda Pymes #2', srv,
-              'VENTA', seller, sup, 'N/A', 'San José', 'Central',
-              srv, 'SER' + (10000 + i), '7' + String(1000000 + i)
+              dateStr, nowYear, nowMonth, `Cliente Pymes P2 ${i}`, `3-101-${100000 + i}`,
+              subPlan, price, 'INSTALADA', sector, srvNorm,
+              'VENTA', seller, sup, 'Pymes #2', 'San José', 'San José',
+              'ETA-' + (10000 + i), String(9000000 + i), 'Pymes #2 | Central',
+              nowMonth, dayNum, 'VENTA'
             ]);
           }
 
@@ -8492,7 +8507,7 @@
           if (feedback) {
             feedback.style.display = 'block';
             feedback.style.color = '#10b981';
-            feedback.innerHTML = '✅ ¡Muestra de Pymes #2 cargada exitosamente (450 ventas de prueba)!';
+            feedback.innerHTML = '✅ ¡Muestra de Pymes #2 cargada exitosamente (150 instalaciones de prueba)!';
           }
           switchProject('P2');
         });
@@ -8516,14 +8531,14 @@
           if (feedback) {
             feedback.style.display = 'block';
             feedback.style.color = '#0284c7';
-            feedback.innerHTML = `⏳ Procesando archivo "${file.name}"...`;
+            feedback.innerHTML = `⏳ Procesando archivo "${escapeHtml(file.name)}"...`;
           }
 
           const reader = new FileReader();
           reader.onload = function(evt) {
             try {
               const data = new Uint8Array(evt.target.result);
-              const workbook = XLSX.read(data, { type: 'array' });
+              const workbook = XLSX.read(data, { type: 'array', cellDates: true });
               const firstSheet = workbook.SheetNames[0];
               const worksheet = workbook.Sheets[firstSheet];
               const rawJson = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
@@ -8532,30 +8547,7 @@
                 throw new Error('El archivo no contiene filas suficientes.');
               }
 
-              const rows = [];
-              for (let i = 1; i < rawJson.length; i++) {
-                const r = rawJson[i];
-                if (!r || r.length === 0) continue;
-                const fecha = String(r[0] || '2026-10-01');
-                const anio = parseInt(r[1]) || 2026;
-                const mes = String(r[2] || 'Octubre');
-                const cliente = String(r[3] || 'Cliente');
-                const cedula = String(r[4] || '');
-                const plan = String(r[5] || 'Plan');
-                const monto = parseFloat(r[6]) || 0;
-                const canal = String(r[7] || 'Cadenas');
-                const tienda = String(r[8] || 'Tienda P2');
-                const serv = String(r[9] || 'Pospago');
-                const est = String(r[10] || 'VENTA').toUpperCase();
-                const vendedor = String(r[11] || 'Vendedor P2');
-                const supervisor = String(r[12] || 'Supervisor P2');
-
-                rows.push([
-                  fecha, anio, mes, cliente, cedula, plan, monto, canal, tienda, serv, est, vendedor, supervisor,
-                  'N/A', String(r[14] || 'San José'), String(r[15] || 'Central'), serv, '', ''
-                ]);
-              }
-
+              const rows = parseClientExcelRows(rawJson, 'Pymes #2');
               App.dataP2 = rows;
               try { localStorage.setItem('salesland_dataset_p2', JSON.stringify(rows)); } catch(e) {}
               if (feedback) {
@@ -8566,13 +8558,66 @@
             } catch (err) {
               if (feedback) {
                 feedback.style.color = '#ef4444';
-                feedback.innerHTML = `❌ Error al procesar el Excel: ${err.message}`;
+                feedback.innerHTML = `❌ Error al procesar el Excel: ${escapeHtml(err.message)}`;
               }
             }
           };
           reader.readAsArrayBuffer(file);
         });
       }
+    }
+
+    function parseClientExcelRows(rawJson, defaultGrupo = 'Pymes #1') {
+      const hdr = (rawJson[0] || []).map(h => String(h || '').trim().toLowerCase());
+      const isMasterExcel = hdr.some(h => h.includes('orden eta') || h.includes('mes activo') || h.includes('tipo de servicio'));
+      const estPrices = { 'doble play': 26900, 'one play': 19500, 'triple play': 34900, 'full claro': 32900, 'pospago': 15900, 'empresas': 49900 };
+      const rows = [];
+      for (let i = 1; i < rawJson.length; i++) {
+        const r = rawJson[i];
+        if (!r || r.every(c => c === null || c === undefined || c === '')) continue;
+        if (isMasterExcel) {
+          const estRaw = String(r[7] || 'SIN ESTADO').trim().toUpperCase();
+          const estInst = estRaw.includes('INSTALAD') ? 'INSTALADA' : (estRaw.includes('PEND') ? 'PENDIENTE' : (estRaw.includes('ANUL') ? 'ANULADA' : (estRaw === 'NP' ? 'NP' : estRaw)));
+          const estCom = estInst === 'INSTALADA' ? 'VENTA' : (estInst === 'PENDIENTE' ? 'PENDIENTE' : 'RECHAZADO');
+          const subPlan = String(r[13] || 'ONE PLAY').trim().toUpperCase();
+          const sLow = subPlan.toLowerCase();
+          const normTipo = sLow.includes('full claro') ? 'Full Claro' : (sLow.includes('doble play') ? 'Doble Play' : (sLow.includes('triple play') ? 'Triple Play' : (sLow.includes('pospago') ? 'Pospago' : (sLow.includes('empresa') ? 'Empresas' : 'One Play'))));
+          const mesAct = String(r[14] || r[0] || 'Noviembre').trim();
+          const anio = parseInt(r[15], 10) || 2026;
+          const diaNum = Math.max(1, Math.min(31, parseInt(r[24], 10) || 1));
+          const mNums = { enero:'01', febrero:'02', marzo:'03', abril:'04', mayo:'05', junio:'06', julio:'07', agosto:'08', septiembre:'09', setiembre:'09', octubre:'10', noviembre:'11', diciembre:'12' };
+          const mPad = mNums[mesAct.toLowerCase()] || '11';
+          const fechaStr = `${anio}-${mPad}-${String(diaNum).padStart(2, '0')}`;
+          const grupo = String(r[23] || defaultGrupo).includes('2') ? 'Pymes #2' : defaultGrupo;
+          const price = estCom === 'VENTA' ? (estPrices[normTipo.toLowerCase()] || 24900) : 0;
+          rows.push([
+            fechaStr, anio, mesAct.charAt(0).toUpperCase() + mesAct.slice(1).toLowerCase(),
+            String(r[2] || 'Cliente Pymes'), String(r[3] || 'S/C'), subPlan, price,
+            estInst, String(r[20] || '(En blanco)'), normTipo, estCom,
+            String(r[4] || 'Sin Asignar'), String(r[5] || 'Sin Asignar'), grupo,
+            String(r[17] || 'Sin Especificar'), String(r[18] || 'Sin Especificar'),
+            String(r[9] || 'S/O'), String(r[10] || 'S/F'), String(r[16] || 'Directo'),
+            String(r[0] || mesAct), diaNum, String(r[6] || estCom)
+          ]);
+        } else {
+          const fecha = String(r[0] || '2026-11-01');
+          const anio = parseInt(r[1], 10) || 2026;
+          const mes = String(r[2] || 'Noviembre');
+          const estInst = String(r[7] || 'INSTALADA').toUpperCase();
+          const estCom = String(r[10] || (estInst === 'INSTALADA' ? 'VENTA' : 'RECHAZADO')).toUpperCase();
+          const diaNum = parseInt(fecha.slice(8, 10), 10) || 1;
+          rows.push([
+            fecha, anio, mes, String(r[3] || 'Cliente Pymes'), String(r[4] || 'S/C'),
+            String(r[5] || 'DOBLE PLAY'), parseFloat(r[6]) || 0, estInst,
+            String(r[8] || '(En blanco)'), String(r[9] || 'Doble Play'), estCom,
+            String(r[11] || 'Sin Asignar'), String(r[12] || 'Sin Asignar'),
+            String(r[13] || defaultGrupo), String(r[14] || 'San José'), String(r[15] || 'San José'),
+            String(r[16] || 'S/O'), String(r[17] || 'S/F'), String(r[18] || 'Directo'),
+            String(r[19] || mes), parseInt(r[20], 10) || diaNum, String(r[21] || estCom)
+          ]);
+        }
+      }
+      return rows;
     }
 
     function getUniqueSupervisorsList() {
@@ -12284,15 +12329,18 @@
 
       let itemsHtml = '';
       provMatches.forEach(p => {
-        itemsHtml += `<div class="cr-map-search-item" onclick="window.drillDownToProvince('${p}'); document.getElementById('cr-map-search-results').style.display='none';">
-          <span>🏢 <strong>${p}</strong></span>
+        const pEsc = escapeHtml(p);
+        itemsHtml += `<div class="cr-map-search-item" onclick="window.drillDownToProvince('${pEsc}'); const box=document.getElementById('cr-map-search-results'); if(box) box.style.display='none';">
+          <span>🏢 <strong>${pEsc}</strong></span>
           <span style="font-size:0.68rem; color:var(--text-muted);">Provincia</span>
         </div>`;
       });
       cantonMatches.slice(0, 10).forEach(c => {
-        itemsHtml += `<div class="cr-map-search-item" onclick="window.highlightCanton('${c.name}'); document.getElementById('cr-map-search-results').style.display='none';">
-          <span>📍 <strong>${c.name}</strong></span>
-          <span style="font-size:0.68rem; color:#06b6d4;">${c.prov}</span>
+        const cEsc = escapeHtml(c.name);
+        const provEsc = escapeHtml(c.prov);
+        itemsHtml += `<div class="cr-map-search-item" onclick="window.highlightCanton('${cEsc}'); const box=document.getElementById('cr-map-search-results'); if(box) box.style.display='none';">
+          <span>📍 <strong>${cEsc}</strong></span>
+          <span style="font-size:0.68rem; color:#06b6d4;">${provEsc}</span>
         </div>`;
       });
 
@@ -12970,7 +13018,7 @@
         if (!CR_PROVINCIAS.includes(provRaw) && provRaw && provRaw !== 'Sin Especificar' && (!pdvRaw || pdvRaw === 'General' || pdvRaw === 'Sin Especificar' || pdvRaw === 'NA')) {
           pdv = provRaw;
         }
-        if (!pdv || pdv === 'Sin Especificar' || pdv === 'NA' || pdv === '1') pdv = 'Tienda Retail';
+        if (!pdv || pdv === 'Sin Especificar' || pdv === 'NA' || pdv === '1') pdv = '(En blanco)';
         const canton = cantonRaw && cantonRaw !== 'Sin Especificar' && cantonRaw !== 'N/D' ? cantonRaw : 'General';
 
         return { prov: prov || 'San José', canton, pdv };
@@ -13005,7 +13053,7 @@
       App.filtered.forEach(r => {
         if (r[10] !== 'VENTA') return;
         const { prov, canton, pdv } = resolveRowGeo(r);
-        const canal = r[7] || 'Cadenas';
+        const canal = r[13] || 'Pymes #1';
         const monto = r[6] || 0;
         const servCat = serviceCategoryMap(r[9]);
 
@@ -13107,14 +13155,14 @@
 
         availableCantons.forEach(c => {
           const isSel = App.selectedCantonFilter === c.nombre ? 'selected' : '';
-          cantOptions.push(`<option value="${c.nombre}" ${isSel}>${c.nombre} (${c.ventas.toLocaleString()} u.)</option>`);
+          cantOptions.push(`<option value="${escapeHtml(c.nombre)}" ${isSel}>${escapeHtml(c.nombre)} (${c.ventas.toLocaleString()} u.)</option>`);
         });
         selCantonEl.innerHTML = cantOptions.join('');
       }
 
-      // Llenar PDVs según provincia y cantón seleccionados
+      // Llenar Sectores Comerciales según provincia y cantón seleccionados
       if (selPdvEl) {
-        const pdvOptions = ['<option value="">Todas las Tiendas</option>'];
+        const pdvOptions = ['<option value="">Todos los Sectores</option>'];
         const availablePdvs = Object.values(pdvDataAll).filter(p => {
           if (App.selectedProvinceFilter && window.getProvSlug(p.provincia) !== window.getProvSlug(App.selectedProvinceFilter)) return false;
           if (App.selectedCantonFilter && p.canton !== App.selectedCantonFilter) return false;
@@ -13123,7 +13171,7 @@
 
         availablePdvs.forEach(p => {
           const isSel = App.selectedPdvFilter === p.nombre ? 'selected' : '';
-          pdvOptions.push(`<option value="${p.nombre}" ${isSel}>${p.nombre} (${p.ventas.toLocaleString()} u. - ${p.canton})</option>`);
+          pdvOptions.push(`<option value="${escapeHtml(p.nombre)}" ${isSel}>${escapeHtml(p.nombre)} (${p.ventas.toLocaleString()} u. - ${escapeHtml(p.canton)})</option>`);
         });
         selPdvEl.innerHTML = pdvOptions.join('');
       }
@@ -13140,7 +13188,7 @@
         if (App.selectedProvinceFilter) {
           crumbProv.style.display = 'inline-flex';
           crumbArrowProv.style.display = 'inline';
-          crumbProv.innerHTML = `📍 ${App.selectedProvinceFilter}`;
+          crumbProv.innerHTML = `📍 ${escapeHtml(App.selectedProvinceFilter)}`;
           crumbProv.classList.toggle('current', !App.selectedCantonFilter && !App.selectedPdvFilter);
         } else {
           crumbProv.style.display = 'none';
@@ -13152,7 +13200,7 @@
         if (App.selectedCantonFilter) {
           crumbCanton.style.display = 'inline-flex';
           crumbArrowCanton.style.display = 'inline';
-          crumbCanton.innerHTML = `🏘️ ${App.selectedCantonFilter}`;
+          crumbCanton.innerHTML = `🏘️ ${escapeHtml(App.selectedCantonFilter)}`;
           crumbCanton.classList.toggle('current', !App.selectedPdvFilter);
         } else {
           crumbCanton.style.display = 'none';
@@ -13164,7 +13212,7 @@
         if (App.selectedPdvFilter) {
           crumbPdv.style.display = 'inline-flex';
           crumbArrowPdv.style.display = 'inline';
-          crumbPdv.innerHTML = `🏪 ${App.selectedPdvFilter}`;
+          crumbPdv.innerHTML = `🏢 ${escapeHtml(App.selectedPdvFilter)}`;
           crumbPdv.classList.add('current');
         } else {
           crumbPdv.style.display = 'none';
@@ -13689,7 +13737,7 @@
       pdvList.sort((a, b) => b.ventas - a.ventas);
 
       if (pdvTableCount) {
-        pdvTableCount.textContent = `${pdvList.length} tiendas activas registradas`;
+        pdvTableCount.textContent = `${pdvList.length} sectores activos registrados`;
       }
 
       // Actualizar Micro-Ribbon del Desglose Jerárquico (Card 2) según sub-pestaña activa
@@ -13709,7 +13757,7 @@
         if (rHierTop3) rHierTop3.textContent = `${top3Pct}% (${top3Sum.toLocaleString()} u.)`;
         if (rHierRev) rHierRev.textContent = `${formatCurrency(topItem.facturacion || 0)} (${topItem.nombre})`;
         if (rHierCount) {
-          const unitLbl = activeSubTab === 'pdvs' ? 'tiendas con ventas' : (activeSubTab === 'cantones' ? 'cantones con ventas' : 'provincias activas');
+          const unitLbl = activeSubTab === 'pdvs' ? 'sectores con ventas' : (activeSubTab === 'cantones' ? 'cantones con ventas' : 'provincias activas');
           rHierCount.textContent = `${tierItems.length.toLocaleString()} ${unitLbl}`;
         }
       } else {
@@ -13721,15 +13769,15 @@
 
       if (pdvTableBody) {
         if (pdvList.length === 0) {
-          pdvTableBody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:1.5rem; color:var(--text-muted);">No se encontraron tiendas con los filtros aplicados.</td></tr>';
+          pdvTableBody.innerHTML = '<tr><td colspan="11" style="text-align:center; padding:1.5rem; color:var(--text-muted);">No se encontraron sectores comerciales con los filtros aplicados.</td></tr>';
         } else {
           pdvTableBody.innerHTML = pdvList.map((p, i) => `
             <tr>
               <td style="font-weight:700; color:${i < 3 ? '#f59e0b' : 'var(--text-muted)'};">#${i+1}</td>
-              <td><strong style="color:var(--text-primary);">${p.nombre}</strong></td>
-              <td>${p.canton}</td>
-              <td><span class="cr-geo-breadcrumb-step" style="font-size:0.72rem;">${p.provincia}</span></td>
-              <td><span style="display:inline-block; padding:2px 7px; border-radius:5px; font-size:0.7rem; font-weight:700; background:rgba(2,132,199,0.12); color:#0284c7;">${p.canal}</span></td>
+              <td><strong style="color:var(--text-primary);">${escapeHtml(p.nombre)}</strong></td>
+              <td>${escapeHtml(p.canton)}</td>
+              <td><span class="cr-geo-breadcrumb-step" style="font-size:0.72rem;">${escapeHtml(p.provincia)}</span></td>
+              <td><span style="display:inline-block; padding:2px 7px; border-radius:5px; font-size:0.7rem; font-weight:700; background:rgba(2,132,199,0.12); color:#0284c7;">${escapeHtml(p.canal)}</span></td>
               <td style="text-align:center; font-weight:700; color:#0284c7;">${p.servicios.Pospago}</td>
               <td style="text-align:center; font-weight:700; color:#10b981;">${p.servicios.Prepago}</td>
               <td style="text-align:center; font-weight:700; color:#8b5cf6;">${p.servicios.Portabilidad}</td>
@@ -13914,14 +13962,14 @@
         if (tds.length >= 10) {
           const row = {
             'Ranking': tds[0].textContent.trim(),
-            'Tienda / PDV': tds[1].textContent.trim(),
+            'Sector Comercial': tds[1].textContent.trim(),
             'Cantón': tds[2].textContent.trim(),
             'Provincia': tds[3].textContent.trim(),
-            'Canal': tds[4].textContent.trim(),
-            'Pospago': parseInt(tds[5].textContent.replace(/,/g, '').trim(), 10) || 0,
-            'Prepago': parseInt(tds[6].textContent.replace(/,/g, '').trim(), 10) || 0,
-            'Porta': parseInt(tds[7].textContent.replace(/,/g, '').trim(), 10) || 0,
-            'Hogar': parseInt(tds[8].textContent.replace(/,/g, '').trim(), 10) || 0,
+            'Grupo / Célula': tds[4].textContent.trim(),
+            'Doble Play': parseInt(tds[5].textContent.replace(/,/g, '').trim(), 10) || 0,
+            'One Play': parseInt(tds[6].textContent.replace(/,/g, '').trim(), 10) || 0,
+            'Triple Play': parseInt(tds[7].textContent.replace(/,/g, '').trim(), 10) || 0,
+            'Corp/Otros': parseInt(tds[8].textContent.replace(/,/g, '').trim(), 10) || 0,
             'Total Ventas': parseInt(tds[9].textContent.replace(/,/g, '').trim(), 10) || 0
           };
           if (!isSupervisor && tds[10]) {
@@ -13930,12 +13978,12 @@
           rows.push(row);
         }
       });
-      if (rows.length === 0) return alert('No hay tiendas visibles para exportar.');
+      if (rows.length === 0) return alert('No hay sectores comerciales visibles para exportar.');
       const ws = XLSX.utils.json_to_sheet(rows);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Tiendas_PDVs");
-      XLSX.writeFile(wb, `Salesland_PDVs_${new Date().toISOString().slice(0,10)}.xlsx`);
-      window.showToast('Directorio de tiendas descargado', '📥');
+      XLSX.utils.book_append_sheet(wb, ws, "Sectores_Comerciales");
+      XLSX.writeFile(wb, `Salesland_Sectores_Pymes_${new Date().toISOString().slice(0,10)}.xlsx`);
+      window.showToast('Directorio de sectores descargado', '📥');
     };
 
 
@@ -14201,7 +14249,8 @@
       // Calculate executive metrics from approved sales only (r[10] === 'VENTA')
       const ventasRows = App.filtered.filter(r => r[10] === 'VENTA');
       const totalVentas = ventasRows.length;
-      let targetQuota = typeof getTotalTargetQuota === 'function' ? getTotalTargetQuota(activeMonth) : (App.targetQuota || 7806);
+      const pymesDefaultQuota = activeMonth.toLowerCase() === 'noviembre' ? 250 : 350;
+      let targetQuota = typeof getTotalTargetQuota === 'function' ? getTotalTargetQuota(activeMonth) : (App.targetQuota || pymesDefaultQuota);
       if (App.filters.servicio && App.filters.servicio !== 'all' && typeof getTargetForService === 'function') {
         const servQuota = getTargetForService(App.filters.servicio, activeMonth);
         if (servQuota !== null && servQuota > 0) targetQuota = servQuota;
@@ -14406,7 +14455,8 @@
       const activeMonth = App.filters.mes && App.filters.mes !== 'all' ? App.filters.mes : 'Octubre';
       const activeYear = App.filters.anio && App.filters.anio !== 'all' ? App.filters.anio : '2026';
       const activeProject = App.currentProject === 'P2' ? 'Pymes #2' : 'Pymes #1';
-      let targetQuota = typeof getTotalTargetQuota === 'function' ? getTotalTargetQuota(activeMonth) : (App.targetQuota || 7806);
+      const pymesDefaultQuota = activeMonth.toLowerCase() === 'noviembre' ? 250 : 350;
+      let targetQuota = typeof getTotalTargetQuota === 'function' ? getTotalTargetQuota(activeMonth) : (App.targetQuota || pymesDefaultQuota);
       if (App.filters.servicio && App.filters.servicio !== 'all' && typeof getTargetForService === 'function') {
         const servQuota = getTargetForService(App.filters.servicio, activeMonth);
         if (servQuota !== null && servQuota > 0) targetQuota = servQuota;
@@ -15040,12 +15090,20 @@
           try {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, { type: 'array', cellDates: true });
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const sheetName = workbook.SheetNames.includes('Data') ? 'Data' : workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
             const jsonRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
             if (jsonRows.length <= 1) return alert('Archivo vacío o sin datos.');
-            
-            // Clean parsing
-            alert('Archivo procesado con éxito.');
+            const parsed = parseClientExcelRows(jsonRows, App.currentProject === 'P2' ? 'Pymes #2' : 'Pymes #1');
+            if (!parsed.length) return alert('No se encontraron registros válidos en el archivo.');
+            App.dataP1 = parsed.filter(r => r[13] !== 'Pymes #2');
+            App.dataP2 = parsed.filter(r => r[13] === 'Pymes #2');
+            App.dataAll = parsed;
+            switchProject(App.currentProject);
+            if (typeof window.renderPowerBiPymesSuite === 'function') window.renderPowerBiPymesSuite();
+            if (typeof window.showToast === 'function') {
+              window.showToast(`Archivo "${file.name}" cargado (${parsed.length.toLocaleString()} registros)`, '📥');
+            }
             modal.classList.remove('open');
           } catch(err) {
             alert('Error al leer archivo: ' + err.message);
@@ -15145,12 +15203,13 @@
           if (syncSpinner) syncSpinner.style.display = 'inline-block';
           if (syncMsg) {
             syncMsg.style.color = 'var(--text-brand)';
-            syncMsg.innerText = 'Leyendo y cruzando archivos Excel...';
+            syncMsg.innerText = 'Leyendo y procesando Dashboard Pymes.xlsx...';
           }
-          if (syncSub) syncSub.innerText = 'Extrayendo Retail y Prepago, consolidando Pospago y actualizando datos...';
+          if (syncSub) syncSub.innerText = 'Consolidando Célula Pymes #1 y Pymes #2, metas y métricas Power BI...';
 
           try {
             const resp = await fetch('/api/actualizar-datos', { method: 'POST', cache: 'no-store' });
+            const errPayload = !resp.ok && resp.status !== 429 ? await resp.json().catch(() => ({})) : null;
             if (resp.ok || resp.status === 429) {
               // Poll /api/excel-status until background ETL finishes
               let polls = 0;
@@ -15180,7 +15239,7 @@
                 window.location.reload();
               }, 1500);
             } else {
-              throw new Error('Error al procesar los archivos Excel.');
+              throw new Error((errPayload && errPayload.error) || 'Error al procesar el archivo Excel.');
             }
           } catch(err) {
             if (syncSpinner) syncSpinner.style.display = 'none';
@@ -15193,7 +15252,8 @@
               syncMsg.innerText = 'Nota de Sincronización';
             }
             if (syncSub) {
-              syncSub.innerHTML = 'Asegúrate de tener abierto <strong style="color:var(--text-primary)">http://localhost:8080</strong> o ejecuta <strong style="color:var(--text-primary)">Actualizar_Datos.bat</strong> en tu computadora.';
+              const errMsgTxt = err && err.message && err.message.includes('Permisos') ? escapeHtml(err.message) + ' Inicia sesión como Administrador o ejecuta ' : 'Asegúrate de tener abierto <strong style="color:var(--text-primary)">http://localhost:8080</strong> o ejecuta ';
+              syncSub.innerHTML = `${errMsgTxt}<strong style="color:var(--text-primary)">Actualizar_Datos.bat</strong> en tu computadora.`;
             }
             btnRunSync.disabled = false;
             btnRunSync.style.opacity = '1';
@@ -15223,7 +15283,7 @@
       const PROJECT_QR_CATALOG = {
         PYMES_ALL: {
           url: 'https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/index.html',
-          wifiSuffix: '',
+          wifiPath: '/index.html',
           badge: 'ENLACE PÚBLICO HTTPS (PROYECTO PYMES CONSOLIDADO):',
           tag: '🏢 PROYECTO: SALESLAND PYMES (CONSOLIDADO)',
           tagBg: '#e0f2fe',
@@ -15231,7 +15291,7 @@
         },
         RETAIL: {
           url: 'https://saleslandretail24-afk.github.io/Salesland-Dashboard-Retail-P1/index.html',
-          wifiSuffix: '',
+          wifiPath: null,
           badge: 'ENLACE PÚBLICO HTTPS (PROYECTO RETAIL CONSOLIDADO):',
           tag: '🛍️ PROYECTO: SALESLAND RETAIL (CONSOLIDADO)',
           tagBg: '#fef3c7',
@@ -15239,7 +15299,7 @@
         },
         PORTAL: {
           url: 'https://saleslandretail24-afk.github.io/Salesland-Dashboard-Pymes/portal.html',
-          wifiSuffix: '',
+          wifiPath: '/portal.html',
           badge: 'ENLACE PÚBLICO HTTPS (PORTAL CENTRAL DE DASHBOARDS):',
           tag: '🌐 PORTAL CENTRAL SALESLAND (PYMES & RETAIL)',
           tagBg: '#dcfce7',
@@ -15248,8 +15308,10 @@
       };
 
       let activeInternetUrl = OFFICIAL_GITHUB_URL;
-      let baseWifiUrl = 'http://192.168.1.82:8080/index.html';
-      let activeWifiUrl = baseWifiUrl;
+      let baseWifiOrigin = (window.location.protocol === 'http:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')
+        ? window.location.origin
+        : 'http://192.168.1.82:8080';
+      let activeWifiUrl = baseWifiOrigin + '/index.html';
 
       function getSelectedQrProjectConfig() {
         const key = (qrProjSelector && qrProjSelector.value) ? qrProjSelector.value : 'PYMES_ALL';
@@ -15258,11 +15320,13 @@
 
       async function syncTunnelInfo() {
         try {
-          if (window.location.protocol !== 'https:' && (window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1') || window.location.hostname.startsWith('192.168.'))) {
+          if (window.location.protocol !== 'https:' && (window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1') || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('10.'))) {
             const resp = await fetch('/api/tunnel', { cache: 'no-store' });
             if (resp && resp.ok) {
               const data = await resp.json();
-              if (data && data.wifiUrl) baseWifiUrl = data.wifiUrl;
+              if (data && data.wifiUrl) {
+                try { baseWifiOrigin = new URL(data.wifiUrl).origin; } catch (e) {}
+              }
             }
           }
         } catch (e) {
@@ -15274,8 +15338,8 @@
       function applyQrModalMode() {
         const cfg = getSelectedQrProjectConfig();
         activeInternetUrl = cfg.url;
-        activeWifiUrl = baseWifiUrl + (cfg.wifiSuffix || '');
-        const isNet = (currentMode === 'internet');
+        activeWifiUrl = cfg.wifiPath ? (baseWifiOrigin + cfg.wifiPath) : cfg.url;
+        const isNet = (currentMode === 'internet' || !cfg.wifiPath);
         const urlToUse = isNet ? activeInternetUrl : activeWifiUrl;
 
         if (tabQrInternet && tabQrWifi) {
@@ -16325,7 +16389,9 @@
         : 'Noviembre';
       const mIdx = allMonthsList.indexOf(primaryMonth);
       const prevM = mIdx > 0 ? allMonthsList[mIdx - 1] : 'Diciembre';
-      const curY = (anioFilter !== 'all') ? (parseInt(anioFilter, 10) || 2026) : 2026;
+      const curY = (anioFilter !== 'all')
+        ? (parseInt(anioFilter, 10) || 2026)
+        : (periodPool.reduce((mx, r) => Math.max(mx, Number(r[1]) || 0), 0) || 2026);
       const targetYoyY = curY - 1;
       const prevY = mIdx > 0 ? curY : (curY - 1);
 
@@ -16348,7 +16414,7 @@
 
       // KPI 4: Variación Vs año anterior (Mismo mes del año anterior donde Estado === 'INSTALADA')
       const yoyPool = commonFilteredPool.filter(r => {
-        if (r[1] !== targetYoyY) return false;
+        if (Number(r[1]) !== targetYoyY) return false;
         if (mesFilter !== 'all' && !String(mesFilter).includes(',')) {
           if (String(r[2] || '').toLowerCase() !== primaryMonth.toLowerCase()) return false;
         }
@@ -16365,7 +16431,7 @@
       const elYoySub = document.getElementById('kpi-yoy-sub-delta');
       const elYoyBadge = document.getElementById('kpi-yoy-badge');
       const elYoyPeriod = document.getElementById('kpi-yoy-period');
-      if (elYoyPeriod) elYoyPeriod.innerText = `${primaryMonth.slice(0, 3)} ${curY} (${curVentas}) vs ${primaryMonth.slice(0, 3)} ${targetYoyY} (${yoyCount})`;
+      if (elYoyPeriod) elYoyPeriod.innerText = anioFilter === 'all' ? `Consolidado vs ${targetYoyY}` : `${primaryMonth.slice(0, 3)} ${curY} (${curVentas}) vs ${primaryMonth.slice(0, 3)} ${targetYoyY} (${yoyCount})`;
 
       if (elYoyVal) elYoyVal.innerText = yoyCount.toLocaleString();
       if (yoyCount > 0) {
@@ -16388,7 +16454,7 @@
 
       // KPI 5: Variación Vs Mes anterior (Mes inmediatamente anterior al seleccionado donde Estado === 'INSTALADA')
       const momPool = commonFilteredPool.filter(r => {
-        if (r[1] !== prevY) return false;
+        if (Number(r[1]) !== prevY) return false;
         if (String(r[2] || '').toLowerCase() !== prevM.toLowerCase()) return false;
         if (r[7] !== 'INSTALADA') return false;
         if (diaFilter !== 'all') {
@@ -16440,8 +16506,9 @@
       const maxServ = servEntries.length ? servEntries[0][1] : 1;
       const servHtml = servEntries.length ? servEntries.map(([name, val]) => {
         const pct = Math.max(6, Math.round((val / maxServ) * 100));
+        const sEsc = escapeHtml(name);
         return `<div class="pbi-hbar-row">
-          <div class="pbi-hbar-label" title="${name}">${name}</div>
+          <div class="pbi-hbar-label" title="${sEsc}">${sEsc}</div>
           <div class="pbi-hbar-track"><div class="pbi-hbar-fill" style="width:${pct}%;"></div></div>
           <div class="pbi-hbar-val">${val}</div>
         </div>`;
@@ -16520,7 +16587,7 @@
         elVend1.innerHTML = `<table class="pbi-matrix-table">
           <thead><tr><th>Vendedor</th><th class="num">Pymes # 1</th><th class="num">Pymes # 2</th><th class="num">Total</th></tr></thead>
           <tbody>${vRows.map(([name, o]) => `<tr>
-            <td>${name}</td>
+            <td>${escapeHtml(name)}</td>
             <td class="num">${o.p1 || ''}</td>
             <td class="num">${o.p2 || ''}</td>
             <td class="num"><strong>${o.tot}</strong></td>
@@ -16547,7 +16614,7 @@
         elProv1.innerHTML = `<table class="pbi-matrix-table">
           <thead><tr><th>Provincia</th><th class="num">Pymes # 1</th><th class="num">Pymes # 2</th><th class="num">Total</th></tr></thead>
           <tbody>${pRows.map(([pName, o]) => `<tr>
-            <td>${pName || '<span style="opacity:0.45;">(En blanco)</span>'}</td>
+            <td>${pName ? escapeHtml(pName) : '<span style="opacity:0.45;">(En blanco)</span>'}</td>
             <td class="num">${o.p1 || ''}</td>
             <td class="num">${o.p2 || ''}</td>
             <td class="num"><strong>${o.tot}</strong></td>
@@ -16604,7 +16671,7 @@
         elEstProv.innerHTML = `<table class="pbi-matrix-table">
           <thead><tr><th>Provincia</th><th class="num">ANULADA</th><th class="num">INSTALADA</th><th class="num">PENDIENTE</th><th class="num">Total</th></tr></thead>
           <tbody>${epRows.map(([pName, o]) => `<tr>
-            <td>${pName || '<span style="opacity:0.45;">(En blanco)</span>'}</td>
+            <td>${pName ? escapeHtml(pName) : '<span style="opacity:0.45;">(En blanco)</span>'}</td>
             <td class="num">${o.ANULADA || ''}</td>
             <td class="num">${o.INSTALADA || ''}</td>
             <td class="num">${o.PENDIENTE || ''}</td>
@@ -16714,7 +16781,7 @@
           <thead><tr><th>Supervisor</th><th>Servicios</th><th class="num">Ventas</th></tr></thead>
           <tbody>${supRows.map(([k, v]) => {
             const [sName, srv] = k.split('||');
-            return `<tr><td>${sName}</td><td>${srv}</td><td class="num"><strong>${v}</strong></td></tr>`;
+            return `<tr><td>${escapeHtml(sName)}</td><td>${escapeHtml(srv)}</td><td class="num"><strong>${v}</strong></td></tr>`;
           }).join('')}</tbody>
           <tfoot><tr><td>Total</td><td></td><td class="num">${supTot}</td></tr></tfoot>
         </table>`;
@@ -16734,7 +16801,7 @@
         elSectP2.innerHTML = `<table class="pbi-matrix-table">
           <thead><tr><th>Sector Comercial</th><th class="num">Recuento de Estado</th></tr></thead>
           <tbody>${sectRows.map(([sc, v]) => `<tr>
-            <td>${sc || '<span style="opacity:0.45;">(En blanco)</span>'}</td>
+            <td>${sc ? escapeHtml(sc) : '<span style="opacity:0.45;">(En blanco)</span>'}</td>
             <td class="num">${v}</td>
           </tr>`).join('')}</tbody>
           <tfoot><tr><td>Total</td><td class="num pbi-gold-cell">${sectTot}</td></tr></tfoot>
@@ -16762,7 +16829,7 @@
           const gObj = gTree[g];
           if (gObj.tot === 0) return;
           bodyRows += `<tr class="pbi-group-row">
-            <td>⊟ ${g}</td>
+            <td>⊟ ${escapeHtml(g)}</td>
             <td class="num">${gObj.ANULADA || ''}</td>
             <td class="num">${gObj.INSTALADA || ''}</td>
             <td class="num">${gObj.PENDIENTE || ''}</td>
@@ -16771,7 +16838,7 @@
           const sEntries = Object.entries(gObj.sellers).sort((a, b) => b[1].tot - a[1].tot || a[0].localeCompare(b[0]));
           sEntries.forEach(([sName, sObj]) => {
             bodyRows += `<tr>
-              <td style="padding-left:1.35rem;">${sName}</td>
+              <td style="padding-left:1.35rem;">${escapeHtml(sName)}</td>
               <td class="num">${sObj.ANULADA || ''}</td>
               <td class="num">${sObj.INSTALADA || ''}</td>
               <td class="num">${sObj.PENDIENTE || ''}</td>
@@ -16840,7 +16907,7 @@
           });
           elFueraGam.innerHTML = `<table class="pbi-matrix-table">
             <thead><tr><th>Zona / Cantón</th><th class="num">Instalaciones</th></tr></thead>
-            <tbody>${Object.entries(fgMap).sort((a,b)=>b[1]-a[1]).map(([z,v])=>`<tr><td>${z}</td><td class="num"><strong>${v}</strong></td></tr>`).join('')}</tbody>
+            <tbody>${Object.entries(fgMap).sort((a,b)=>b[1]-a[1]).map(([z,v])=>`<tr><td>${escapeHtml(z)}</td><td class="num"><strong>${v}</strong></td></tr>`).join('')}</tbody>
             <tfoot><tr><td>Total Fuera GAM</td><td class="num">${fueraList.length}</td></tr></tfoot>
           </table>`;
         }
@@ -16943,7 +17010,7 @@
             </tr>
           </thead>
           <tbody>${pRows.map(([pName, o]) => `<tr>
-            <td>${pName || '<span style="opacity:0.45;">(En blanco)</span>'}</td>
+            <td>${pName ? escapeHtml(pName) : '<span style="opacity:0.45;">(En blanco)</span>'}</td>
             <td class="num">${o.p1v || ''}</td><td class="num">${o.p1b || ''}</td>
             <td class="num">${o.p2v || ''}</td><td class="num">${o.p2b || ''}</td>
             <td class="num"><strong>${o.tv || ''}</strong></td><td class="num"><strong>${o.tb || ''}</strong></td>
